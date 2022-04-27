@@ -7,12 +7,10 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 # gem "rails"
 
 gem "sinatra", "~> 2.1"
-gem "twilio-ruby", "~> 5.62"
 gem "http", "~> 5.0"
 gem "envyable", "~> 1.2"
 
 gem "puma", "~> 5.5"
 
-gem 'pg'
+gem 'mysql2'
 gem "sequel"
-gem 'google-cloud-firestore'
