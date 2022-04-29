@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sequel'
 require 'date'
 
+enable :sessions
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'postgres://localhost/piaBaseDatos')
 
 class Main < Sinatra::Base
@@ -15,16 +16,9 @@ class Main < Sinatra::Base
   end
 
   post '/' do
-    @user = params['user']
-    puts @user['name'], @user['password']
+    session[:user] = params['user']
 
-    @person = personas.filter(:name => @user['name'], :password => @user['password'])
-
-    if (person != nil)
-      erb :menu
-    else
-      return "No se encontró el usuario."
-    end
+    redirect '/menu'
   end
 
   get '/signUp' do
@@ -50,6 +44,22 @@ class Main < Sinatra::Base
       :password => @user['password']
     )
 
-    erb :index
+    session[:user] = {
+      'name': @user['name'],
+      'password': @user['password'],
+      'class': @user['class'],
+    }
+
+    redirect '/menu'
+  end
+
+  get '/menu' do
+    @user = personas.filter(:name => session[:user]['name'], :password => session[:user]['password'])
+
+    if (person != nil)
+      erb :menu
+    else
+      return "No se encontró el usuario."
+    end
   end
 end
