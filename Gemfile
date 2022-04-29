@@ -12,5 +12,5 @@ gem "envyable", "~> 1.2"
 
 gem "puma", "~> 5.5"
 
-gem 'mysql2'
+gem 'pg'
 gem "sequel"
