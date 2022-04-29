@@ -33,4 +33,20 @@ class Main < Sinatra::Base
   get '/signUp' do
     erb :signup
   end
+
+  post '/signUp' do
+    @user = params['user']
+
+    ubicacionUser = ubicaciones.insert(
+      :calle => @user['street'],
+      :codigoPostal => @user['zip'],
+      :ciudad => @user['city'],
+      :estado => @user['state'],
+      :pais => @user['country']
+    )
+
+    puts ubicacionUser
+
+    erb :index
+  end
 end
