@@ -28,7 +28,7 @@ class Main < Sinatra::Base
   post '/signUp' do
     @user = params['user']
 
-    ubicacionUserId = ubicaciones.insert_conflict(:target=>:calle).insert(
+    ubicacionUserId = ubicaciones.insert(
       :calle => @user['street'],
       :codigopostal => @user['zip'],
       :ciudad => @user['city'],
