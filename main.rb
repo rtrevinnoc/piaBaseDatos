@@ -2,10 +2,11 @@ require 'sinatra'
 require 'sequel'
 require 'date'
 
-enable :sessions
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'postgres://localhost/piaBaseDatos')
 
 class Main < Sinatra::Base
+  enable :sessions
+
   ubicaciones = DB[:ubicaciones]
   personas = DB[:personas]
 
