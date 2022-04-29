@@ -29,7 +29,7 @@ class Main < Sinatra::Base
 
     ubicacionUser = ubicaciones.insert(
       :calle => @user['street'],
-      :codigoPostal => @user['zip'],
+      :codigopostal => @user['zip'],
       :ciudad => @user['city'],
       :estado => @user['state'],
       :pais => @user['country']
