@@ -55,7 +55,7 @@ class Main < Sinatra::Base
   end
 
   get '/menu' do
-    @user = personas.filter(:name => session[:user]['name'], :password => session[:user]['password'])
+    @user = personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
 
     if (@user != nil)
       erb :menu
