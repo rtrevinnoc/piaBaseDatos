@@ -18,7 +18,13 @@ class Main < Sinatra::Base
     @user = params['user']
     puts @user['name'], @user['password']
 
-    erb :index
+    @person = personas.filter(:name => @user['name'], :password => @user['password'])
+
+    if (person != nil)
+      erb :menu
+    else
+      return "No se encontró el usuario."
+    end
   end
 
   get '/signUp' do

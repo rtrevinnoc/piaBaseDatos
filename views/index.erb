@@ -25,6 +25,16 @@
           <input type="password" name="user[password]" class="form-control" id="floatingPassword" placeholder="Contraseña">
           <label for="floatingPassword">Password</label>
         </div>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label for="floatingSelect" class="input-group-text">Clase</label>
+          </div>
+          <select name="user[class]" class="form-control" id="floatingSelect">
+            <option selected>Escoge...</option>
+            <option value="empleado">Empleado</option>
+            <option value="cliente">Huesped</option>
+          </select>
+        </div>
 
         <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar Sesión</button>
       </form>
