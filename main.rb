@@ -22,7 +22,7 @@ class Main < Sinatra::Base
       :codigoPostal => @user['zip'],
       :ciudad => @user['city'],
       :estado => @user['state'],
-      :pais => @user['country'],
+      :pais => @user['country']
     )
 
     puts ubicacionUser
