@@ -17,16 +17,6 @@ class Main < Sinatra::Base
     @user = params['user']
     puts @user['name'], @user['password']
 
-    ubicacionUser = ubicaciones.insert(
-      :calle => @user['street'],
-      :codigoPostal => @user['zip'],
-      :ciudad => @user['city'],
-      :estado => @user['state'],
-      :pais => @user['country']
-    )
-
-    puts ubicacionUser
-
     erb :index
   end
 
