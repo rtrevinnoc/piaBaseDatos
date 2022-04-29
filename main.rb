@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sequel'
+require 'date'
 
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'postgres://localhost/piaBaseDatos')
 
@@ -27,7 +28,7 @@ class Main < Sinatra::Base
   post '/signUp' do
     @user = params['user']
 
-    ubicacionUser = ubicaciones.insert(
+    ubicacionUserId = ubicaciones.insert(
       :calle => @user['street'],
       :codigopostal => @user['zip'],
       :ciudad => @user['city'],
@@ -35,7 +36,13 @@ class Main < Sinatra::Base
       :pais => @user['country']
     )
 
-    puts ubicacionUser
+    personas.insert(
+      :nombre => @user['name'],
+      :fechanacimiento => Date.parse(@user['birth']),
+      :direccion => ubicacionUserId,
+      :telefono => @user['tel'],
+      :password => @user['password']
+    )
 
     erb :index
   end
