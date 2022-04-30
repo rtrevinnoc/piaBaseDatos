@@ -51,6 +51,8 @@ class Main < Sinatra::Base
       :password => @user['password']
     )
 
+    puts personaUserId
+
     session[:user] = {
       'name': @user['name'],
       'password': @user['password'],
