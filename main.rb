@@ -9,6 +9,8 @@ class Main < Sinatra::Base
 
   ubicaciones = DB[:ubicaciones]
   personas = DB[:personas]
+  empleados = DB[:empleados]
+  huespedes = DB[:huespedes]
 
   get '/' do
     @hola = "hola"
@@ -37,7 +39,7 @@ class Main < Sinatra::Base
       :pais => @user['country']
     )
 
-    personas.insert(
+    personaUserId = personas.insert(
       :nombre => @user['name'],
       :fechanacimiento => Date.parse(@user['birth']),
       :direccion => ubicacionUserId,
@@ -51,16 +53,34 @@ class Main < Sinatra::Base
       'class': @user['class'],
     }
 
+    if @user['class'] = "empleado"
+      empleados.insert(
+        :persona => personaUserId
+      )
+    elsif @user['class'] == "cliente"
+      huespedes.insert(
+        :persona => personaUserId
+      )
+    end
+
     redirect '/menu'
   end
 
   get '/menu' do
     @user = personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
 
-    if (@user != nil)
-      erb :menu
-    else
-      return "No se encontró el usuario."
-    end
+    puts @user
+
+    #if @user['class'] = "empleado"
+      #if empleados.filter(:persona => personaUserId)
+    #elsif @user['class'] == "cliente"
+      #if huespedes.filter(:persona => personaUserId)
+    #end
+
+    #if (@user != nil)
+      #erb :menu
+    #else
+      #return "No se encontró el usuario."
+    #end
   end
 end
