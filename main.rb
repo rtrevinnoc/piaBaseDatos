@@ -31,13 +31,17 @@ class Main < Sinatra::Base
   post '/signUp' do
     @user = params['user']
 
-    ubicacionUserId = ubicaciones.insert(
-      :calle => @user['street'],
-      :codigopostal => @user['zip'],
-      :ciudad => @user['city'],
-      :estado => @user['state'],
-      :pais => @user['country']
-    )
+    begin
+      ubicacionUserId = ubicaciones.insert(
+        :calle => @user['street'],
+        :codigopostal => @user['zip'],
+        :ciudad => @user['city'],
+        :estado => @user['state'],
+        :pais => @user['country']
+      )
+    rescue
+      ubicacionUserId = ubicaciones.filter(:calle => @user['street']).get(:ubicacionId)
+    end
 
     personaUserId = personas.insert(
       :nombre => @user['name'],
