@@ -40,7 +40,7 @@ class Main < Sinatra::Base
         :pais => @user['country']
       )
     rescue
-      ubicacionUserId = ubicaciones.filter(:calle => @user['street']).get(:ubicacionId)
+      ubicacionUserId = ubicaciones.filter(:calle => @user['street']).get(:ubicacionid)
     end
 
     personaUserId = personas.insert(
