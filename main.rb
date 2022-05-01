@@ -105,7 +105,7 @@ class Main < Sinatra::Base
 
     $edificios.insert(
       :sede => $sedes.filter(:nombre => @edificio['sede']).get(:sedeid),
-      :nombre => @edificio['nombre'],
+      :nombre => @edificio['name'],
       :posicion => @edificio['posicion'],
       :tipo => @edificio['tipo'],
     )
