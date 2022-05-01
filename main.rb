@@ -77,7 +77,7 @@ class Main < Sinatra::Base
     @user = personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
 
     puts !@user.empty?
-    puts ((session[:user]['class'] == "empleado" && !empleados.filter(:persona => @user.get(:personaid)).empty?) || (session[:user]['class'] == "cliente" && !huespedes.filter(:persona => @user.get(:personaid)).empty?) ))
+    puts ((session[:user]['class'] == "empleado" && !empleados.filter(:persona => @user.get(:personaid)).empty?) || (session[:user]['class'] == "cliente" && !huespedes.filter(:persona => @user.get(:personaid)).empty?) )
     puts (session[:user]['class'] == "empleado" && !empleados.filter(:persona => @user.get(:personaid)).empty?)
     puts (session[:user]['class'] == "cliente" && !huespedes.filter(:persona => @user.get(:personaid)).empty?)
 
