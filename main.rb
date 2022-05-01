@@ -51,8 +51,6 @@ class Main < Sinatra::Base
       :password => @user['password']
     )
 
-    puts personaUserId
-
     session[:user] = {
       'name': @user['name'],
       'password': @user['password'],
@@ -78,7 +76,7 @@ class Main < Sinatra::Base
   get '/menu' do
     @user = personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
 
-    if (!@user.empty? && ((@user['class'] == "empleado" && !empleados.filter(:persona => personaUserId).empty?) || (@user['class'] == "cliente" && !huespedes.filter(:persona => personaUserId).empty?) ))
+    if (!@user.empty? && ((session[:user]['class'] == "empleado" && !empleados.filter(:persona => personaUserId).empty?) || (session[:user]['class'] == "cliente" && !huespedes.filter(:persona => personaUserId).empty?) ))
       erb :menu
     else
       return "No se encontró el usuario."
