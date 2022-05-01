@@ -131,7 +131,7 @@ class Main < Sinatra::Base
     @cuarto = params['cuarto']
 
     $cuartos.insert( 
-      :piso => $pisos.filter(:numero => @cuarto['piso'], :edificio => $edificios.filter(:nombre => @cuarto['edificio'], :sede => $sedes.filter(:nombre => @cuarto['sede']).get(:sedeid)).get(:edificioid)),
+                    :piso => $pisos.filter(:numero => @cuarto['piso'], :edificio => $edificios.filter(:nombre => @cuarto['edificio'], :sede => $sedes.filter(:nombre => @cuarto['sede']).get(:sedeid)).get(:edificioid) ).get(:pisoid),
       :numero => @cuarto['numero'],
       :ancho => @cuarto['ancho'],
       :largo => @cuarto['largo'],
