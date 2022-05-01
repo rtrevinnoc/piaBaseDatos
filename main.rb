@@ -62,9 +62,9 @@ class Main < Sinatra::Base
     if @user['class'] = "empleado"
       empleados.insert(
         :oficina => nil,
+        :sueldo => nil,
         :persona => personaUserId,
         :horario => nil,
-        :persona => nil
       )
     elsif @user['class'] == "cliente"
       huespedes.insert(
