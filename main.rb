@@ -3,6 +3,11 @@ require 'sequel'
 require 'date'
 
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'postgres://localhost/piaBaseDatos')
+ubicaciones = DB[:ubicaciones]
+personas = DB[:personas]
+empleados = DB[:empleados]
+huespedes = DB[:huespedes]
+sedes = DB[:sedes]
 
 def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
@@ -20,12 +25,6 @@ end
 
 class Main < Sinatra::Base
   enable :sessions
-
-  ubicaciones = DB[:ubicaciones]
-  personas = DB[:personas]
-  empleados = DB[:empleados]
-  huespedes = DB[:huespedes]
-  sedes = DB[:sedes]
 
   get '/' do
     @hola = "hola"
