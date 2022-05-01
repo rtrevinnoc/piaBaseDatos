@@ -7,15 +7,15 @@ DB = Sequel.connect(ENV['DATABASE_URL'] || 'postgres://localhost/piaBaseDatos')
 class Main < Sinatra::Base
   enable :sessions
 
-  @ubicaciones = DB[:ubicaciones]
-  @personas = DB[:personas]
-  @empleados = DB[:empleados]
-  @huespedes = DB[:huespedes]
-  @sedes = DB[:sedes]
+  $ubicaciones = DB[:ubicaciones]
+  $personas = DB[:personas]
+  $empleados = DB[:empleados]
+  $huespedes = DB[:huespedes]
+  $sedes = DB[:sedes]
 
   def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
-      return @ubicaciones.insert(
+      return $ubicaciones.insert(
         :calle => calle,
         :codigopostal => cp,
         :ciudad => ciudad,
@@ -23,7 +23,7 @@ class Main < Sinatra::Base
         :pais => pais
       )
     rescue
-      return @ubicaciones.filter(:calle => calle).get(:ubicacionid)
+      return $ubicaciones.filter(:calle => calle).get(:ubicacionid)
     end
   end
 
@@ -48,7 +48,7 @@ class Main < Sinatra::Base
 
     ubicacionUserId = setOrGetUbicacion(@user['street'], @user['zip'], @user['city'], @user['state'], @user['country'])
 
-    personaUserId = @personas.insert(
+    personaUserId = $personas.insert(
       :nombre => @user['name'],
       :fechanacimiento => Date.parse(@user['birth']),
       :direccion => ubicacionUserId,
@@ -63,14 +63,14 @@ class Main < Sinatra::Base
     }
 
     if @user['class'] == "empleado"
-      @empleados.insert(
+      $empleados.insert(
         :oficina => nil,
         :sueldo => nil,
         :persona => personaUserId,
         :horario => nil,
       )
     elsif @user['class'] == "cliente"
-      @huespedes.insert(
+      $huespedes.insert(
         :persona => personaUserId
       )
     end
@@ -79,9 +79,9 @@ class Main < Sinatra::Base
   end
 
   get '/menu' do
-    @user = @personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
+    @user = $personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
 
-    if (!@user.empty? && ((session[:user]['class'] == "empleado" && !@empleados.filter(:persona => @user.get(:personaid)).empty?) || (session[:user]['class'] == "cliente" && !@huespedes.filter(:persona => @user.get(:personaid)).empty?) ))
+    if (!@user.empty? && ((session[:user]['class'] == "empleado" && !$empleados.filter(:persona => @user.get(:personaid)).empty?) || (session[:user]['class'] == "cliente" && !$huespedes.filter(:persona => @user.get(:personaid)).empty?) ))
       erb :menu
     else
       return "No se encontró el usuario."
@@ -91,7 +91,7 @@ class Main < Sinatra::Base
   post '/registrarSede' do
     @sede = params['sede']
 
-    @sedes.insert(
+    $sedes.insert(
       :nombre => @sede['name'],
       :direccion => setOrGetUbicacion(@sede['street'], @sede['zip'], @sede['city'], @sede['state'], @sede['country'])
     )
