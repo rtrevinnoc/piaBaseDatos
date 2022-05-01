@@ -14,6 +14,7 @@ class Main < Sinatra::Base
   $sedes = DB[:sedes]
   $edificios = DB[:edificios]
   $pisos = DB[:pisos]
+  $cuartos = DB[:cuartos]
 
   def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
@@ -121,6 +122,19 @@ class Main < Sinatra::Base
       :edificio => $edificios.filter(:nombre => @piso['edificio'], :sede => $sedes.filter(:nombre => @piso['sede']).get(:sedeid)).get(:edificioid),
       :numero => @piso['numero'],
       :categoria => @piso['categoria'],
+    )
+
+    redirect '/menu'
+  end
+
+  post '/registrarCuarto' do
+    @cuarto = params['cuarto']
+
+    $cuartos.insert( 
+      :piso => $pisos.filter(:numero => @cuarto['piso'], :edificio => $edificios.filter(:nombre => @piso['edificio'], :sede => $sedes.filter(:nombre => @piso['sede']).get(:sedeid)).get(:edificioid))
+      :numero => @piso['numero'],
+      :ancho => @piso['ancho'],
+      :largo => @piso['largo'],
     )
 
     redirect '/menu'
