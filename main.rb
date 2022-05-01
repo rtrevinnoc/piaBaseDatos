@@ -95,5 +95,7 @@ class Main < Sinatra::Base
       :nombre => @sede['name'],
       :direccion => setOrGetUbicacion(@sede['street'], @sede['zip'], @sede['city'], @sede['state'], @sede['country'])
     )
+
+    redirect '/menu'
   end
 end
