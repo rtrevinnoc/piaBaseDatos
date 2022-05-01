@@ -52,9 +52,9 @@ class Main < Sinatra::Base
     )
 
     session[:user] = {
-      'name': @user['name'],
-      'password': @user['password'],
-      'class': @user['class']
+      'name' => @user['name'],
+      'password' => @user['password'],
+      'class' => @user['class']
     }
 
     if @user['class'] == "empleado"
