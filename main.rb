@@ -13,6 +13,7 @@ class Main < Sinatra::Base
   $huespedes = DB[:huespedes]
   $sedes = DB[:sedes]
   $edificios = DB[:edificios]
+  $pisos = DB[:pisos]
 
   def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
@@ -108,6 +109,18 @@ class Main < Sinatra::Base
       :nombre => @edificio['name'],
       :posicion => @edificio['posicion'],
       :tipo => @edificio['tipo'],
+    )
+
+    redirect '/menu'
+  end
+
+  post '/registrarPiso' do
+    @piso = params['piso']
+
+    $pisos.insert(
+      :edificio => $edificios.filter(:nombre => @piso['edificio']).get(:edificioid),
+      :numero => @piso['numero'],
+      :categoria => @piso['categoria'],
     )
 
     redirect '/menu'
