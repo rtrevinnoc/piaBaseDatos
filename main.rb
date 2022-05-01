@@ -118,7 +118,7 @@ class Main < Sinatra::Base
     @piso = params['piso']
 
     $pisos.insert( 
-      :edificio => $edificios.filter(:nombre => @piso['edificio'], :sede => @piso['sede']).get(:edificioid),
+      :edificio => $edificios.filter(:nombre => @piso['edificio'], :sede => $sedes.filter(:nombre => @piso['sede']).get(:sedeid)).get(:edificioid),
       :numero => @piso['numero'],
       :categoria => @piso['categoria'],
     )
