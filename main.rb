@@ -25,7 +25,7 @@ class Main < Sinatra::Base
   personas = DB[:personas]
   empleados = DB[:empleados]
   huespedes = DB[:huespedes]
-  huespedes = DB[:sedes]
+  sedes = DB[:sedes]
 
   get '/' do
     @hola = "hola"
