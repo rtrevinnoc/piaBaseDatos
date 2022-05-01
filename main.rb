@@ -57,7 +57,7 @@ class Main < Sinatra::Base
       'class': @user['class']
     }
 
-    if @user['class'] = "empleado"
+    if @user['class'] == "empleado"
       empleados.insert(
         :oficina => nil,
         :sueldo => nil,
@@ -75,6 +75,8 @@ class Main < Sinatra::Base
 
   get '/menu' do
     @user = personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
+
+    puts (!@user.empty? && ((session[:user]['class'] == "empleado" && !empleados.filter(:persona => @user.get(:personaid)).empty?) || (session[:user]['class'] == "cliente" && !huespedes.filter(:persona => @user.get(:personaid)).empty?) ))
 
     if (!@user.empty? && ((session[:user]['class'] == "empleado" && !empleados.filter(:persona => @user.get(:personaid)).empty?) || (session[:user]['class'] == "cliente" && !huespedes.filter(:persona => @user.get(:personaid)).empty?) ))
       erb :menu
