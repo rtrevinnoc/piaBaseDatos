@@ -28,7 +28,41 @@
         </li>
       </ul>
       <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+          <form method="post" action="/registrarSede">
+            <h3 class="h3 mb-3 fw-normal">Registrar Sede</h3>
+
+            <div class="form-floating">
+              <input type="input" name="sede[name]" class="form-control" id="floatingInput" placeholder="Nombre">
+              <label for="floatingInput">Nombre</label>
+            </div>
+
+            <div class="form-floating">
+              <input type="input" name="sede[street]" class="form-control" id="floatingInput" placeholder="Calle y número">
+              <label for="floatingInput">Calle</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[zip]" class="form-control" id="floatingInput" placeholder="Codigo Postal">
+              <label for="floatingInput">Codigo Postal</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[city]" class="form-control" id="floatingInput" placeholder="Ciudad">
+              <label for="floatingInput">Ciudad</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[state]" class="form-control" id="floatingInput" placeholder="Estado">
+              <label for="floatingInput">Estado</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[country]" class="form-control" id="floatingInput" placeholder="Pais">
+              <label for="floatingInput">Pais</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Sede</button>
+          </form>
+
+        </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
       </div>

@@ -4,6 +4,20 @@ require 'date'
 
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'postgres://localhost/piaBaseDatos')
 
+def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
+    begin
+      return ubicaciones.insert(
+        :calle => calle,
+        :codigopostal => cp,
+        :ciudad => ciudad,
+        :estado => estado,
+        :pais => pais
+      )
+    rescue
+      return ubicaciones.filter(:calle => calle).get(:ubicacionid)
+    end
+end
+
 class Main < Sinatra::Base
   enable :sessions
 
@@ -11,6 +25,7 @@ class Main < Sinatra::Base
   personas = DB[:personas]
   empleados = DB[:empleados]
   huespedes = DB[:huespedes]
+  huespedes = DB[:sedes]
 
   get '/' do
     @hola = "hola"
@@ -31,17 +46,7 @@ class Main < Sinatra::Base
   post '/signUp' do
     @user = params['user']
 
-    begin
-      ubicacionUserId = ubicaciones.insert(
-        :calle => @user['street'],
-        :codigopostal => @user['zip'],
-        :ciudad => @user['city'],
-        :estado => @user['state'],
-        :pais => @user['country']
-      )
-    rescue
-      ubicacionUserId = ubicaciones.filter(:calle => @user['street']).get(:ubicacionid)
-    end
+    ubicacionUserId = setOrGetUbicacion(@user['street'], @user['zip'], @user['city'], @user['state'], @user['country'])
 
     personaUserId = personas.insert(
       :nombre => @user['name'],
@@ -81,5 +86,14 @@ class Main < Sinatra::Base
     else
       return "No se encontró el usuario."
     end
+  end
+
+  post '/registrarSede' do
+    @sede = params['sede']
+
+    sedes.insert(
+      :nombre => @sede['name'],
+      :direccion => setOrGetUbicacion(@user['street'], @user['zip'], @user['city'], @user['state'], @user['country'])
+    )
   end
 end
