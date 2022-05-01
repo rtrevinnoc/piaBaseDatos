@@ -26,6 +26,9 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Registrar Piso</button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="cuarto-tab" data-bs-toggle="tab" data-bs-target="#cuarto" type="button" role="tab" aria-controls="cuarto" aria-selected="false">Registrar cuarto</button>
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -128,6 +131,40 @@
             </div>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Piso</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade" id="cuarto" role="tabpanel" aria-labelledby="cuarto-tab">
+
+          <form method="post" action="/registrarCuarto">
+            <h3 class="h3 mb-3 fw-normal">Registrar Cuarto</h3>
+
+            <div class="form-floating">
+              <input type="input" name="cuarto[numero]" class="form-control" id="floatingInput" placeholder="Numero">
+              <label for="floatingInput">Numero</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="cuarto[sede]" class="form-control" id="floatingInput" placeholder="Sede">
+              <label for="floatingInput">Sede</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="cuarto[edificio]" class="form-control" id="floatingInput" placeholder="Edificio">
+              <label for="floatingInput">Edificio</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="cuarto[piso]" class="form-control" id="floatingInput" placeholder="Piso">
+              <label for="floatingInput">Piso</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="cuarto[largo]" class="form-control" id="floatingInput" placeholder="Largo">
+              <label for="floatingInput">Largo</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="cuarto[ancho]" class="form-control" id="floatingInput" placeholder="Ancho">
+              <label for="floatingInput">Ancho</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Cuarto</button>
           </form>
 
         </div>
