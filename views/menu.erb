@@ -18,10 +18,10 @@
 
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Registrar Sede</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Registrar Edificio</button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
@@ -63,7 +63,40 @@
           </form>
 
         </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+  
+          <form method="post" action="/registrarEdificio">
+            <h3 class="h3 mb-3 fw-normal">Registrar Sede</h3>
+
+            <div class="form-floating">
+              <input type="input" name="edificio[name]" class="form-control" id="floatingInput" placeholder="Nombre">
+              <label for="floatingInput">Nombre</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="edificio[sede]" class="form-control" id="floatingInput" placeholder="Sede">
+              <label for="floatingInput">Sede</label>
+            </div>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Posicion</label>
+              </div>
+              <select name="edificio[posicion]" class="form-control" id="floatingSelect">
+                <option selected>Escoge...</option>
+                <option value="norte">Norte</option>
+                <option value="sur">Sur</option>
+                <option value="este">Este</option>
+                <option value="oeste">Oeste</option>
+              </select>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="edificio[tipo]" class="form-control" id="floatingInput" placeholder="Tipo">
+              <label for="floatingInput">Tipo</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Sede</button>
+          </form>
+
+        </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
       </div>
     </main>
