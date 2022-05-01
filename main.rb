@@ -93,7 +93,7 @@ class Main < Sinatra::Base
 
     sedes.insert(
       :nombre => @sede['name'],
-      :direccion => setOrGetUbicacion(@user['street'], @user['zip'], @user['city'], @user['state'], @user['country'])
+      :direccion => setOrGetUbicacion(@sede['street'], @sede['zip'], @sede['city'], @sede['state'], @sede['country'])
     )
   end
 end
