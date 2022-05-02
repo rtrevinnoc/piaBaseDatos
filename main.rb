@@ -144,7 +144,7 @@ class Main < Sinatra::Base
       $habitaciones.insert(
         :cuarto => cuartoId,
         :categoria => @cuarto['categoria'],
-        :precio => @cuarto['precio']
+        :precio => @cuarto['precio'],
         :vacante => true
       ) 
     elsif (@cuarto['proposito'] == "oficina") 
