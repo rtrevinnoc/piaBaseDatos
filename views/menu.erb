@@ -84,7 +84,7 @@
                 <label for="floatingSelect" class="input-group-text">Posicion</label>
               </div>
               <select name="edificio[posicion]" class="form-control" id="floatingSelect">
-                <option selected>Escoge...</option>
+                <option selected disabled>Escoge...</option>
                 <option value="norte">Norte</option>
                 <option value="sur">Sur</option>
                 <option value="este">Este</option>
@@ -122,7 +122,7 @@
                 <label for="floatingSelect" class="input-group-text">Categoria</label>
               </div>
               <select name="piso[categoria]" class="form-control" id="floatingSelect">
-                <option selected>Escoge...</option>
+                <option selected disabled>Escoge...</option>
                 <option value="administrativo">Administrativo</option>
                 <option value="economico">Economico</option>
                 <option value="lujo">Lujo</option>
@@ -163,6 +163,48 @@
               <input type="number" name="cuarto[ancho]" class="form-control" id="floatingInput" placeholder="Ancho">
               <label for="floatingInput">Ancho</label>
             </div>
+            <div class="form-floating">
+              <input type="tel" name="cuarto[tel]" class="form-control" id="floatingInput" placeholder="Telefono">
+              <label for="floatingInput">Telefono</label>
+            </div>
+            <div class="form-floating">
+              <input type="radio" class="btn-check" name="cuarto[proposito]" id="habitacion" autocomplete="off" checked value="habitacion">
+              <label class="btn btn-secondary" for="habitacion">Habitacion</label>
+              <input type="radio" class="btn-check" name="cuarto[proposito]" id="oficina" autocomplete="off" value="oficina">
+              <label class="btn btn-secondary" for="oficina">Oficina</label>
+            </div>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Categoria</label>
+              </div>
+              <select name="cuarto[categoria]" class="form-control" id="floatingSelect">
+                <option selected disabled>Escoge...</option>
+                <option disabled>Habitaciones</option>
+                <option value="economico">Economico</option>
+                <option value="lujo">Lujo</option>
+                <option value="presidencial">Presidencial</option>
+                <option disabled>Oficinas</option>
+                <option value="cocina">Cocina</option>
+                <option value="mantenimiento">Mantenimiento</option>
+                <option value="administracion">Administracion</option>
+                <option value="segurida">Seguridad</option>
+              </select>
+            </div>
+            <div class="form-floating" id="precioInput">
+              <input type="number" name="cuarto[precio]" class="form-control" id="floatingInput" placeholder="Precio">
+              <label for="floatingInput">Precio</label>
+            </div>
+
+            <script>
+              proposito = document.querySelector("input[name=rate]:checked").value
+              precio = document.getElementById("precioInput");
+
+              if (proposito === "oficina") {
+                 precio.classList.add("invisible"); 
+              } else {
+                 precio.classList.remove("invisible"); 
+              }
+            </script>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Cuarto</button>
           </form>
