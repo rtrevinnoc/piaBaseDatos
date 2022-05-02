@@ -167,7 +167,7 @@
               <input type="tel" name="cuarto[tel]" class="form-control" id="floatingInput" placeholder="Telefono">
               <label for="floatingInput">Telefono</label>
             </div>
-            <div class="form-floating">
+            <div>
               <input type="radio" class="btn-check" name="cuarto[proposito]" id="habitacion" autocomplete="off" checked value="habitacion">
               <label class="btn btn-secondary" for="habitacion">Habitacion</label>
               <input type="radio" class="btn-check" name="cuarto[proposito]" id="oficina" autocomplete="off" value="oficina">
@@ -196,7 +196,7 @@
             </div>
 
             <script>
-              proposito = document.querySelector("input[name=rate]:checked").value
+              proposito = document.querySelector("input[name=cuarto[proposito]]:checked").value
               precio = document.getElementById("precioInput");
 
               if (proposito === "oficina") {
