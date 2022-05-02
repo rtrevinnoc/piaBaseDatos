@@ -152,7 +152,7 @@ class Main < Sinatra::Base
       $oficinas.insert(
         :cuarto => cuartoId,
         :categoria => @cuarto['categoria'],
-        :departamento => $departamentos.filter(:nombre => @cuarto['departamento']).get(:departamentoid)
+        :departamento => $departamentos.filter(:nombre => @cuarto['dept']).get(:departamentoid)
       ) 
     end
 
