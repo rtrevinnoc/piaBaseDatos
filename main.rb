@@ -187,20 +187,26 @@ class Main < Sinatra::Base
 
     puts @empleado['gerente']
 
-    #personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
-    #sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+    personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
+    sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+
+    if !@empleado['gerente']
+      gerente = nil
+    else
+      gerente = sedeEmpleado
+    end
 
     #if sedeEmpleado != $sedes.filter(:nombre => @empleado['gerente']).get(:sedeid)
       #sedeEmpleado = nil
     #end
 
-    #$empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
-      #:sueldo => @empleado['sueldo'],
-      #:horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
-      #:oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
-      #:directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
-      #:gerentesede => sedeEmpleado
-    #) 
+    $empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
+      :sueldo => @empleado['sueldo'],
+      :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
+      :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
+      :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
+      :gerentesede => sedeEmpleado
+    ) 
 
     redirect '/menu'
   end
@@ -209,6 +215,12 @@ class Main < Sinatra::Base
     nombreEmpleado = params['empleado']
 
     content_type :json
+
+    if !empleadoEmpleado.get(:gerentesede).empty?
+      gerente = true
+    else
+      gerente = false
+    end
 
     #begin
       personaEmpleado = $personas.filter(:nombre => nombreEmpleado)
@@ -229,7 +241,7 @@ class Main < Sinatra::Base
         piso: pisoEmpleado.get(:numero),
         cuarto: cuartoEmpleado.get(:numero),
         dir: empleadoEmpleado.get(:directordept),
-        gerente: empleadoEmpleado.get(:gerentesede)
+        gerente: gerente
       }.to_json
     #rescue
       #{
