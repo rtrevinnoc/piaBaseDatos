@@ -200,10 +200,10 @@ class Main < Sinatra::Base
 
     $empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
       :sueldo => @empleado['sueldo'],
-      :horario => $horarios.insert(:entrada => @empleado['entrada'], :salida => @empleado['salida']),#setOrGetHorario(@empleado['entrada'], @empleado['salida']),
-      :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
-      :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
-      :gerentesede => sedeEmpleado
+      #:horario => $horarios.insert(:entrada => @empleado['entrada'], :salida => @empleado['salida']),#setOrGetHorario(@empleado['entrada'], @empleado['salida']),
+      #:oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
+      #:directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
+      #:gerentesede => sedeEmpleado
     ) 
 
     redirect '/menu'
@@ -214,12 +214,6 @@ class Main < Sinatra::Base
 
     content_type :json
 
-    if !empleadoEmpleado.get(:gerentesede).empty?
-      gerente = true
-    else
-      gerente = false
-    end
-
     #begin
       personaEmpleado = $personas.filter(:nombre => nombreEmpleado)
       empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
@@ -228,6 +222,12 @@ class Main < Sinatra::Base
       pisoEmpleado = $pisos.filter(:pisoid => cuartoEmpleado.get(:piso))
       edificioEmpleado = $edificios.filter(:edificioid => pisoEmpleado.get(:edificio))
       sedeEmpleado = $sedes.filter(:sedeid => edificioEmpleado.get(:sede))
+
+      if !empleadoEmpleado.get(:gerentesede).empty?
+        gerente = true
+      else
+        gerente = false
+      end
 
       {
         nombre: personaEmpleado.get(:nombre),
