@@ -176,7 +176,7 @@ class Main < Sinatra::Base
 
     content_type :json
 
-    begin
+    #begin
       personaEmpleado = $personas.filter(:nombre => nombreEmpleado)
       empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
       oficinaEmpleado = $oficinas.filter(:oficinaid => empleadoEmpleado.get(:oficina))
@@ -197,19 +197,19 @@ class Main < Sinatra::Base
         dir: empleadoEmpleado.get(:directordept),
         gerente: empleadoEmpleado.get(:gerentesede)
       }.to_json
-    rescue
-      {
-        nombre: "",
-        sueldo: "",
-        entrada: "",
-        salida: "",
-        sede: "",
-        edificio: "",
-        piso: "",
-        cuarto: "",
-        dir: "",
-        gerente: "" 
-      }.to_json
-    end
+    #rescue
+      #{
+        #nombre: "",
+        #sueldo: "",
+        #entrada: "",
+        #salida: "",
+        #sede: "",
+        #edificio: "",
+        #piso: "",
+        #cuarto: "",
+        #dir: "",
+        #gerente: "" 
+      #}.to_json
+    #end
   end
 end
