@@ -291,9 +291,9 @@
     <script>
       $(function(){
               const nombre = $('empleadoNombre');
-              nombre.addEventListener('keydown', function onEvent(event) {
+              nombre.on("input", function() {
                   $.getJSON('/verEmpleado', {
-                    empleado: nombre.val
+                    empleado: this.value
 		  }, function(data) {
                     console.log(data);
                   });
