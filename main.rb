@@ -198,12 +198,12 @@ class Main < Sinatra::Base
       #sedeEmpleado = nil
     #end
 
-    $empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
+    $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
       :sueldo => @empleado['sueldo'],
-      #:horario => $horarios.insert(:entrada => @empleado['entrada'], :salida => @empleado['salida']),#setOrGetHorario(@empleado['entrada'], @empleado['salida']),
-      #:oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
-      #:directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
-      #:gerentesede => sedeEmpleado
+      :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
+      :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
+      :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
+      :gerentesede => sedeEmpleado
     ) 
 
     redirect '/menu'
@@ -223,12 +223,6 @@ class Main < Sinatra::Base
       edificioEmpleado = $edificios.filter(:edificioid => pisoEmpleado.get(:edificio))
       sedeEmpleado = $sedes.filter(:sedeid => edificioEmpleado.get(:sede))
 
-      if !empleadoEmpleado.get(:gerentesede).empty?
-        gerente = true
-      else
-        gerente = false
-      end
-
       {
         nombre: personaEmpleado.get(:nombre),
         sueldo: empleadoEmpleado.get(:sueldo),
@@ -239,7 +233,7 @@ class Main < Sinatra::Base
         piso: pisoEmpleado.get(:numero),
         cuarto: cuartoEmpleado.get(:numero),
         dir: empleadoEmpleado.get(:directordept),
-        gerente: gerente
+        gerente: (true & empleadoEmpleado.get(:gerentesede))
       }.to_json
     #rescue
       #{
