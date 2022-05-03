@@ -172,6 +172,7 @@ class Main < Sinatra::Base
 
   get '/verEmpleado' do
     nombreEmpleado = params['empleado']
+    puts nombreEmpleado
 
     content_type :json
 
