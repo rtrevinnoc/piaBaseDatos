@@ -185,8 +185,6 @@ class Main < Sinatra::Base
   post '/actualizarEmpleado' do
     @empleado = params['empleado']
 
-    puts @empleado['gerente']
-
     personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
     sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
 
@@ -202,7 +200,7 @@ class Main < Sinatra::Base
 
     $empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
       :sueldo => @empleado['sueldo'],
-      :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
+      :horario => $horarios.insert(:entrada => @empleado['entrada'], :salida => @empleado['salida']),#setOrGetHorario(@empleado['entrada'], @empleado['salida']),
       :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
       :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
       :gerentesede => sedeEmpleado
