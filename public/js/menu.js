@@ -24,7 +24,7 @@ $(document).ready(function(){
 		    piso.value = data['piso']
 		    cuarto.value = data['cuarto']
 		    dir.value = data['dir']
-		    gerente.value = data['gerente']
+		    gerente.checked = data['gerente']
 		});
 	});
 })

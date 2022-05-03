@@ -185,20 +185,22 @@ class Main < Sinatra::Base
   post '/actualizarEmpleado' do
     @empleado = params['empleado']
 
-    personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
-    sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+    puts @empleado['gerente']
 
-    if sedeEmpleado != $sedes.filter(:nombre => @empleado['gerente']).get(:sedeid)
-      sedeEmpleado = nil
-    end
+    #personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
+    #sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
 
-    $empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
-      :sueldo => @empleado['sueldo'],
-      :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
-      :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
-      :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
-      :gerentesede => sedeEmpleado
-    ) 
+    #if sedeEmpleado != $sedes.filter(:nombre => @empleado['gerente']).get(:sedeid)
+      #sedeEmpleado = nil
+    #end
+
+    #$empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
+      #:sueldo => @empleado['sueldo'],
+      #:horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
+      #:oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
+      #:directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
+      #:gerentesede => sedeEmpleado
+    #) 
 
     redirect '/menu'
   end
