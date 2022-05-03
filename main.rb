@@ -183,7 +183,7 @@ class Main < Sinatra::Base
       cuartoEmpleado = $cuartos.filter(:cuartoid => oficinaEmpleado.get(:cuarto))
       pisoEmpleado = $pisos.filter(:pisoid => cuartoEmpleado.get(:piso))
       edificioEmpleado = $edificios.filter(:edificioid => pisoEmpleado.get(:edificio))
-      sedeEmpleado = $sedes.filter(:sedeid => edificiosEmpleado.get(:sede))
+      sedeEmpleado = $sedes.filter(:sedeid => edificioEmpleado.get(:sede))
 
       {
         nombre: personaEmpleado.get(:nombre),
