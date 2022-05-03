@@ -292,11 +292,12 @@
       $(function(){
               const nombre = $('empleadoNombre');
               nombre.on("input", function() {
-                  $.getJSON('/verEmpleado', {
+                  console.log(this.value)
+                  /*$.getJSON('/verEmpleado', {
                     empleado: this.value
 		  }, function(data) {
                     console.log(data);
-                  });
+                  });*/
               });
       });
     </script>
