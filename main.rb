@@ -35,6 +35,10 @@ class Main < Sinatra::Base
   end
 
   def setOrGetHorario(entrada, salida)
+    if entrada == "" or salida == ""
+      return nil
+    end
+
     begin
       return $horarios.insert(
         :entrada => entrada,
