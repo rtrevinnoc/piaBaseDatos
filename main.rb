@@ -190,7 +190,27 @@ class Main < Sinatra::Base
     @empleado = params['empleado']
 
     personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
-    sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+    begin
+      sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+    rescue
+      sedeEmpleado = nil      
+    end
+
+    if @empleado['sueldo'] == ""
+      sueldo = nil
+    end
+
+    begin
+      oficina = $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid)))
+    rescue
+      oficina = nil
+    end
+
+    begin
+      dir = $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado)
+    rescue
+      dir = nil
+    end
 
     if !@empleado['gerente']
       gerente = nil
@@ -205,8 +225,8 @@ class Main < Sinatra::Base
     $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
       :sueldo => @empleado['sueldo'],
       :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
-      :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid))),
-      :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado),
+      :oficina => oficina,
+      :directordept => dir,
       :gerentesede => sedeEmpleado
     ) 
 
