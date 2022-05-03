@@ -192,8 +192,8 @@ class Main < Sinatra::Base
         salida: empleadoEmpleado.get(:horario),
         sede: sedeEmpleado.get(:nombre),
         edificio: edificioEmpleado.get(:nombre),
-        piso: pisosEmpleado.get(:numero),
-        cuarto: cuartosEmpleado.get(:numero),
+        piso: pisoEmpleado.get(:numero),
+        cuarto: cuartoEmpleado.get(:numero),
         dir: empleadoEmpleado.get(:directordept),
         gerente: empleadoEmpleado.get(:gerentesede)
       }.to_json
