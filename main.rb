@@ -18,6 +18,7 @@ class Main < Sinatra::Base
   $habitaciones = DB[:habitaciones]
   $oficinas = DB[:oficinas]
   $departamentos = DB[:departamentos]
+  $horarios = DB[:horarios]
 
   def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
@@ -30,6 +31,17 @@ class Main < Sinatra::Base
       )
     rescue
       return $ubicaciones.filter(:calle => calle).get(:ubicacionid)
+    end
+  end
+
+  def setOrGetHorario(entrada, salida)
+    begin
+      return $horarios.insert(
+        :entrada => entrada,
+        :salida => salida
+      )
+    rescue
+      return $horarios.filter(:entrada => entrada, :salida => salida).get(:horarioid)
     end
   end
 
@@ -170,9 +182,23 @@ class Main < Sinatra::Base
     redirect '/menu'
   end
 
+  post '/actualizarEmpleado' do
+    @empleado = params['empleado']
+
+    puts @empleado
+    puts @empleado['dir']
+
+    #$empleado.filter(:persona => personaEmpleado.get(:personaid)).update(
+      #:sueldo => @empleado['sueldo'],
+      #:horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
+      #:oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)).get(:edificioid) ).get(:pisoid))),
+    #) 
+
+    redirect '/menu'
+  end
+
   get '/verEmpleado' do
     nombreEmpleado = params['empleado']
-    puts nombreEmpleado
 
     content_type :json
 
