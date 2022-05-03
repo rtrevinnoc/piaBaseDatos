@@ -163,9 +163,52 @@ class Main < Sinatra::Base
     @dept = params['dept']
 
     $departamentos.insert( 
-      :nombre => @dept['name']
+      :nombre => @dept['name'],
+      :sede => $sedes.filter(:nombre => @dept['sede']).get(:sedeid)
     )
 
     redirect '/menu'
+  end
+
+  get '/verEmpleado' do
+    nombreEmpleado = params['empleado']
+
+    content_type :json
+
+    begin
+      personaEmpleado = $personas.filter(:nombre => nombreEmpleado)
+      empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
+      oficinaEmpleado = $oficinas.filter(oficinaid: => empleadoEmpleado.get(:oficina))
+      cuartoEmpleado = $cuartos.filter(cuartoid: => oficinaEmpleado.get(:cuarto))
+      pisoEmpleado = $pisos.filter(pisoid: => cuartoEmpleado.get(:piso))
+      edificioEmpleado = $edificios.filter(edificioid: => pisoEmpleado.get(:edificio))
+      sedeEmpleado = $sedes.filter(sedeid: => edificiosEmpleado.get(:sede))
+
+      {
+        nombre: personaEmpleado.get(:nombre),
+        sueldo: empleadoEmpleado.get(:sueldo),
+        entrada: empleadoEmpleado.get(:horario),
+        salida: empleadoEmpleado.get(:horario),
+        sede: sedeEmpleado.get(:nombre),
+        edificio: edificioEmpleado.get(:nombre),
+        piso: pisosEmpleado.get(:numero),
+        cuarto: cuartosEmpleado.get(:numero),
+        dir: empleadoEmpleado.get(:directordept),
+        gerente: empleadoEmpleado.get(:gerentesede)
+      }.to_json
+    rescue
+      {
+        nombre: "",
+        sueldo: "",
+        entrada: "",
+        salida: "",
+        sede: "",
+        edificio: "",
+        piso: "",
+        cuarto: "",
+        dir: "",
+        gerente: "" 
+      }.to_json
+    end
   end
 end
