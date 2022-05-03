@@ -184,6 +184,11 @@ class Main < Sinatra::Base
 
   post '/actualizarEmpleado' do
     @empleado = params['empleado']
+    @empleado.each { |k, v|
+      if v.empty?
+        @empleado[k] = nil
+      end
+    } 
 
     puts @empleado
     puts @empleado['dir']
