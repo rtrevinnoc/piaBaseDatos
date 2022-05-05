@@ -391,6 +391,12 @@ class Main < Sinatra::Base
       edificioHuesped = $edificios.filter(:edificioid => pisoHuesped.get(:edificio))
       sedeHuesped = $sedes.filter(:sedeid => edificioHuesped.get(:sede))
 
+      puts habitacionHuesped.get(:categoria)
+      puts cuartoHuesped.get(:numero)
+      puts pisoHuesped.get(:numero)
+      puts edificioHuesped.get(:nombre)
+      puts sedeHuesped.get(:nombre)
+
       d['categoria'] = habitacionHuesped.get(:categoria)
       d['cuarto'] = cuartoHuesped.get(:numero)
       d['piso'] = pisoHuesped.get(:numero)
