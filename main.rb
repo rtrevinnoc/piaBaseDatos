@@ -250,8 +250,8 @@ class Main < Sinatra::Base
     {
       nombre: personaEmpleado.get(:nombre),
       sueldo: empleadoEmpleado.get(:sueldo)[1..-1].to_f,
-      entrada: empleadoEmpleado.get(:entrada).to_i,
-      salida: empleadoEmpleado.get(:salida).to_i,
+      entrada: horarioEmpleado.get(:entrada).to_i,
+      salida: horarioEmpleado.get(:salida).to_i,
       sede: sedeEmpleado.get(:nombre),
       edificio: edificioEmpleado.get(:nombre),
       piso: pisoEmpleado.get(:numero).to_i,
