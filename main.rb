@@ -323,7 +323,7 @@ class Main < Sinatra::Base
     habitacionesOcupadas = reservacionesColliding.get(:habitacion)
 
     personaHuesped = $personas.filter(:nombre => session[:user]['name'])
-    huespedHuesped = $huespued.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
+    huespedHuesped = $huesped.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
 
     sedeHuesped = $sedes.filter(:nombre => @res['sede']).get(:sedeid)
     edificioHuesped = $edificios.filter(:sede => sedeHuesped).get(:edificioid)
