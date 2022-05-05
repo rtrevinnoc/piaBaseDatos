@@ -14,8 +14,6 @@ $(document).ready(function(){
 		$.getJSON('/verEmpleado', {
 			empleado: this.value
 		}, function(data) {
-			console.log(data)
-
 			sueldo.val(currency(data['sueldo']))
 			entrada.val(data['entrada'])
 			salida.val(data['salida'])
@@ -26,5 +24,15 @@ $(document).ready(function(){
 			dir.val(data['dir'])
 			gerente.prop('checked', data['gerente'])
 		});
+	});
+
+	const reservaciones = $('#reservacionesTabla');
+
+	$.getJSON('/verReservaciones', {
+		empleado: this.value
+	}, function(data) {
+		data.forEach((res) => {
+			reservaciones.append( "<tr><td>" + res['habitacion'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['salida'] "</td></tr>" );
+		})
 	});
 })
