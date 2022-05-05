@@ -13,18 +13,20 @@ $(document).ready(function(){
 	nombre.on("input", function() {
 		console.log(this.value)
 		$.getJSON('/verEmpleado', {
-		    empleado: this.value
+			empleado: this.value
 		}, function(data) {
-		    nombre.value = data['nombre']
-		    sueldo.value = data['sueldo']
-		    entrada.value = data['entrada']
-		    salida.value = data['salida']
-		    sede.value = data['sede']
-		    edificio.value = data['edificio']
-		    piso.value = data['piso']
-		    cuarto.value = data['cuarto']
-		    dir.value = data['dir']
-		    gerente.checked = data['gerente']
+			console.log(data)
+
+			nombre.value = data['nombre']
+			sueldo.value = data['sueldo']
+			entrada.value = data['entrada']
+			salida.value = data['salida']
+			sede.value = data['sede']
+			edificio.value = data['edificio']
+			piso.value = data['piso']
+			cuarto.value = data['cuarto']
+			dir.value = data['dir']
+			gerente.checked = data['gerente']
 		});
 	});
 })
