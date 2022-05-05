@@ -16,7 +16,7 @@ $(document).ready(function(){
 		}, function(data) {
 			console.log(data)
 
-			sueldo.val(data['sueldo'])
+			sueldo.val(currency(data['sueldo']))
 			entrada.val(data['entrada'])
 			salida.val(data['salida'])
 			sede.val(data['sede'])
