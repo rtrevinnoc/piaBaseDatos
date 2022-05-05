@@ -290,10 +290,9 @@ class Main < Sinatra::Base
   post '/pedirProducto' do
     @prod = params['producto']
     total = @prod['cantidad'].to_i * @prod['precioUnitario'].to_f
-    puts total
     proveedorId = $proveedores.filter(:nombre => @prod['proveedor']).get(:proveedorid)
-    empleadoCompradorId = $empleados.filter(:nombre => @prod['empleado']).get(:empleadoid)
-    puts @prod['fechaVencimiento']
+    personaEmpleado = $personas.filter(:nombre => session[:user]['name'])
+    empleadoCompradorId = $empleados.filter(:persona => personaEmpleado.get(:personaid)).get(:empleadoid)
     productoId = setOrGetProducto(@prod['nombre'], @prod['cantidad'], @prod['fechaVencimiento'], @prod['precioUnitario'], proveedorId)
 
     $ordenes.insert(
