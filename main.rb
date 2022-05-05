@@ -249,13 +249,13 @@ class Main < Sinatra::Base
 
     {
       nombre: personaEmpleado.get(:nombre),
-      sueldo: empleadoEmpleado.get(:sueldo).to_f,
-      entrada: horarioEmpleado.get(:entrada).to_i,
-      salida: horarioEmpleado.get(:salida).to_i,
+      sueldo: empleadoEmpleado.get(:sueldo),
+      entrada: horarioEmpleado.get(:entrada),
+      salida: horarioEmpleado.get(:salida),
       sede: sedeEmpleado.get(:nombre),
       edificio: edificioEmpleado.get(:nombre),
-      piso: pisoEmpleado.get(:numero).to_i,
-      cuarto: cuartoEmpleado.get(:numero).to_i,
+      piso: pisoEmpleado.get(:numero),
+      cuarto: cuartoEmpleado.get(:numero),
       dir: empleadoEmpleado.get(:directordept),
       gerente: (true & empleadoEmpleado.get(:gerentesede))
     }.to_json
