@@ -320,26 +320,26 @@ class Main < Sinatra::Base
     fechaSalida = Date.parse(@res['salida'])
 
     reservacionesColliding = $reservaciones.filter{llegada <= fechaLlegada}.filter{salida >= fechaSalida}.filter(:aceptada)
-    habitacionesOcupadas = reservacionesColliding.all.map{ |x| x[:habitacion] }
+    habitacionesOcupadas = reservacionesColliding.select(:habitacion)
 
     personaHuesped = $personas.filter(:nombre => session[:user]['name'])
     huespedHuesped = $huespedes.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
 
     sedeHuesped = $sedes.filter(:nombre => @res['sede']).get(:sedeid)
-    edificiosHuesped = $edificios.filter(:sede => sedeHuesped).all.map{ |x| x[:edificioid] }
+    edificiosHuesped = $edificios.filter(:sede => sedeHuesped).select(:edificioid)
 
-    puts $edificios.filter(:sede => sedeHuesped).get(:edificioid)
+    puts $edificios.filter(:sede => sedeHuesped).select(:edificioid)
     puts edificiosHuesped
 
-    pisosHuesped = $pisos.filter(:edificio => edificiosHuesped).all.map{ |x| x[:pisoid] }
+    pisosHuesped = $pisos.filter(:edificio => edificiosHuesped).select(:pisoid)
 
     puts pisosHuesped
 
-    cuartosHuesped = $cuartos.filter(:piso => pisosHuesped).all.map{ |x| x[:cuartoid] }
+    cuartosHuesped = $cuartos.filter(:piso => pisosHuesped).select(:cuartoid)
 
     puts cuartosHuesped
 
-    habitacionesLibres = $habitaciones.filter(:cuarto => cuartosHuesped).exclude(:habitacionid => habitacionesOcupadas).get(:habitacionid)
+    habitacionesLibres = $habitaciones.filter(:cuarto => cuartosHuesped).exclude(:habitacionid => habitacionesOcupadas).select(:habitacionid)
     habitacionHuesped = habitacionesLibres.sample()
 
     $reservaciones.insert(
