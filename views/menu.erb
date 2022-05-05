@@ -17,9 +17,8 @@
   </head>
   <body>
     <main class="form-signin mw-100 m-auto">
+      <h1 class="h3 mb-3 fw-normal"><a href="/logOut"><i class="bi bi-x-square-fill"></i></a>Hola <%= session[:user]['class'] %>, <%= @user.get(:nombre) %></h1>
       <% if session[:user]['class'] == "empleado" %>
-      <h1 class="h3 mb-3 fw-normal">Hola <%= session[:user]['class'] %>, <%= @user.get(:nombre) %></h1>
-
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Registrar Sede</button>
@@ -373,8 +372,6 @@
         </div>
       </div>
       <% elsif session[:user]['class'] == "cliente" %>
-      <h1 class="h3 mb-3 fw-normal">Hola <%= session[:user]['class'] %>, <%= @user.get(:nombre) %></h1>
-
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Registrar Sede</button>

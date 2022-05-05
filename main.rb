@@ -375,4 +375,10 @@ class Main < Sinatra::Base
       gerente: (true & empleadoEmpleado.get(:gerentesede))
     }.to_json
   end
+
+  get '/logOut' do
+    session[:user] = nil
+
+    redirect '/'
+  end
 end
