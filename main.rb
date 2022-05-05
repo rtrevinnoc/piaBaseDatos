@@ -288,7 +288,7 @@ class Main < Sinatra::Base
     puts total
     proveedorId = $proveedores.filter(:nombre => @prod['proveedor']).get(:proveedorid)
     deptCompradorId = $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid)
-    productoId = setOrGetProducto(@prod['nombre'], @prov['cantidad'], Date.parse(@prod['fechaVencimiento']), @prod['precioUnitario'], proveedorId)
+    productoId = setOrGetProducto(@prod['nombre'], @prod['cantidad'], Date.parse(@prod['fechaVencimiento']), @prod['precioUnitario'], proveedorId)
 
     $ordenes.insert(
       :producto => productoId,
