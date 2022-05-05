@@ -28,11 +28,10 @@ $(document).ready(function(){
 
 	const reservaciones = $('#reservacionesTabla');
 
-	$.getJSON('/verReservaciones', {
-		empleado: this.value
-	}, function(data) {
-		data.forEach((res) => {
-			reservaciones.append( "<tr><td>" + res['habitacion'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['salida'] "</td></tr>" );
-		})
+	$.getJSON('/verReservaciones', function(data) {
+		console.log(data);
+		//data.forEach((res) => {
+			//reservaciones.append( "<tr><td>" + res['habitacion'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['salida'] "</td></tr>" );
+		//})
 	});
 })
