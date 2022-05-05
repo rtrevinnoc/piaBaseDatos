@@ -320,7 +320,7 @@ class Main < Sinatra::Base
     fechaSalida = Date.parse(@res['salida'])
 
     reservacionesColliding = $reservaciones.filter{llegada <= fechaLlegada}.filter{salida >= fechaSalida}.filter(:aceptada)
-    habitacionesOcupadas = reservacionesColliding.get(:habitacion)
+    habitacionesOcupadas = reservacionesColliding.all.map{ |x| x[:habitacion] }
 
     personaHuesped = $personas.filter(:nombre => session[:user]['name'])
     huespedHuesped = $huespedes.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
