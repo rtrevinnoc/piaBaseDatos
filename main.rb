@@ -234,44 +234,30 @@ class Main < Sinatra::Base
   end
 
   get '/verEmpleado' do
-    nombreEmpleado = params['empleado']
-
     content_type :json
 
-    #begin
-      personaEmpleado = $personas.filter(:nombre => nombreEmpleado)
-      empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
-      oficinaEmpleado = $oficinas.filter(:oficinaid => empleadoEmpleado.get(:oficina))
-      cuartoEmpleado = $cuartos.filter(:cuartoid => oficinaEmpleado.get(:cuarto))
-      pisoEmpleado = $pisos.filter(:pisoid => cuartoEmpleado.get(:piso))
-      edificioEmpleado = $edificios.filter(:edificioid => pisoEmpleado.get(:edificio))
-      sedeEmpleado = $sedes.filter(:sedeid => edificioEmpleado.get(:sede))
+    nombreEmpleado = params['empleado']
 
-      {
-        nombre: personaEmpleado.get(:nombre),
-        sueldo: empleadoEmpleado.get(:sueldo),
-        entrada: empleadoEmpleado.get(:horario),
-        salida: empleadoEmpleado.get(:horario),
-        sede: sedeEmpleado.get(:nombre),
-        edificio: edificioEmpleado.get(:nombre),
-        piso: pisoEmpleado.get(:numero),
-        cuarto: cuartoEmpleado.get(:numero),
-        dir: empleadoEmpleado.get(:directordept),
-        gerente: (true & empleadoEmpleado.get(:gerentesede))
-      }.to_json
-    #rescue
-      #{
-        #nombre: "",
-        #sueldo: "",
-        #entrada: "",
-        #salida: "",
-        #sede: "",
-        #edificio: "",
-        #piso: "",
-        #cuarto: "",
-        #dir: "",
-        #gerente: "" 
-      #}.to_json
-    #end
+    personaEmpleado = $personas.filter(:nombre => nombreEmpleado)
+    empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
+    oficinaEmpleado = $oficinas.filter(:oficinaid => empleadoEmpleado.get(:oficina))
+    cuartoEmpleado = $cuartos.filter(:cuartoid => oficinaEmpleado.get(:cuarto))
+    pisoEmpleado = $pisos.filter(:pisoid => cuartoEmpleado.get(:piso))
+    edificioEmpleado = $edificios.filter(:edificioid => pisoEmpleado.get(:edificio))
+    sedeEmpleado = $sedes.filter(:sedeid => edificioEmpleado.get(:sede))
+    horarioEmpleado = $horarios.filter(:horarioid => empleadoEmpleado.get(:horario))
+
+    {
+      nombre: personaEmpleado.get(:nombre),
+      sueldo: empleadoEmpleado.get(:sueldo)[1..-1].to_f,
+      entrada: empleadoEmpleado.get(:entrada).to_i,
+      salida: empleadoEmpleado.get(:salida).to_i,
+      sede: sedeEmpleado.get(:nombre),
+      edificio: edificioEmpleado.get(:nombre),
+      piso: pisoEmpleado.get(:numero).to_i,
+      cuarto: cuartoEmpleado.get(:numero).to_i,
+      dir: empleadoEmpleado.get(:directordept),
+      gerente: (true & empleadoEmpleado.get(:gerentesede))
+    }.to_json
   end
 end
