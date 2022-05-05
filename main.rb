@@ -331,13 +331,18 @@ class Main < Sinatra::Base
     cuartoHuesped = $cuartos.filter(:piso => pisoEmpleado).get(:cuartoid)
 
     habitacionesLibres = $habitaciones.filter(:cuarto => cuartoHuesped).exclude(:habitacionid => habitacionesOcupadas).get(:habitacionid)
+    habitacionHuesped = habitacionesLibres.sample()
 
     $reservaciones.insert(
-      :habitacion => habitacionesLibres.sample(),
+      :habitacion => habitacionHuesped,
       :llegada => fechaLlegada,
       :salida => fechaSalida,
       :huesped => huespedHuesped,
       :aceptada => true
+    )
+
+    $habitaciones.filter(:habitacionid => habitacionHuesped).update(
+      :vacante => false
     )
 
     redirect '/menu'
