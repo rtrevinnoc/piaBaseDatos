@@ -305,7 +305,7 @@ class Main < Sinatra::Base
     )
 
     $productos_dept.insert(
-      :departamentoid => deptCompradorId,
+      :departamentoid => $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid),
       :productoid => productoId
     )
 
