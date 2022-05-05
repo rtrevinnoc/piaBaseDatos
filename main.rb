@@ -23,6 +23,7 @@ class Main < Sinatra::Base
   $productos = DB[:productos]
   $ordenes = DB[:ordenescompra]
   $productos_dept = DB[:departamentos_productos]
+  $reservaciones = DB[:reservaciones]
 
   def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
@@ -307,6 +308,36 @@ class Main < Sinatra::Base
     $productos_dept.insert(
       :departamentoid => $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid),
       :productoid => productoId
+    )
+
+    redirect '/menu'
+  end
+
+  post '/registrarReservacion' do
+    @res = params['reservacion']
+
+    fechaLlegada = Date.parse(@res['llegada'])
+    fechaSalida = Date.parse(@res['salida'])
+
+    reservacionesColliding = $reservaciones.filter{llegada <= fechaLlegada}.filter{salida >= fechaSalida}.filter(:aceptada)
+    habitacionesOcupadas = reservacionesColliding.get(:habitacion)
+
+    personaHuesped = $personas.filter(:nombre => session[:user]['name'])
+    huespedHuesped = $huespued.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
+
+    sedeHuesped = $sedes.filter(:nombre => @res['sede']).get(:sedeid)
+    edificioHuesped = $edificios.filter(:sede => sedeHuesped).get(:edificioid)
+    pisoHuesped = $pisos.filter(:edificio => edificioHuesped).get(:pisoid)
+    cuartoHuesped = $cuartos.filter(:piso => pisoEmpleado).get(:cuartoid)
+
+    habitacionesLibres = $habitaciones.filter(:cuarto => cuartoHuesped).exclude(:habitacionid => habitacionesOcupadas).get(:habitacionid)
+
+    $reservaciones.insert(
+      :habitacion => habitacionesLibres.sample(),
+      :llegada => fechaLlegada,
+      :salida => fechaSalida,
+      :huesped => huespedHuesped,
+      :aceptada => true
     )
 
     redirect '/menu'
