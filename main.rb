@@ -214,7 +214,7 @@ class Main < Sinatra::Base
 
     #begin
       empleadoEmpleado.update(
-        :oficina => $oficinas.filter(:cuarto => cuartoEmpleado)
+        :oficina => $oficinas.filter(:cuarto => cuartoEmpleado).get(:oficinaid)
       ) 
     #rescue
     #end
