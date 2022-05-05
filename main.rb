@@ -190,45 +190,42 @@ class Main < Sinatra::Base
     @empleado = params['empleado']
 
     personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
-    begin
-      sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
-    rescue
-      sedeEmpleado = nil      
-    end
-
-    if @empleado['sueldo'] == ""
-      sueldo = nil
-    end
+    sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
 
     begin
-      oficina = $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid)))
+      $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
+        :sueldo => @empleado['sueldo']
+      ) 
     rescue
-      oficina = nil
     end
 
     begin
-      dir = $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado)
+      $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
+        :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida'])
+      ) 
     rescue
-      dir = nil
     end
 
-    if !@empleado['gerente']
-      gerente = nil
-    else
-      gerente = sedeEmpleado
+    begin
+      $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
+        :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid)))
+      ) 
+    rescue
     end
 
-    #if sedeEmpleado != $sedes.filter(:nombre => @empleado['gerente']).get(:sedeid)
-      #sedeEmpleado = nil
-    #end
+    begin
+      $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
+        :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado)
+      ) 
+    rescue
+    end
 
-    $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
-      :sueldo => @empleado['sueldo'],
-      :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida']),
-      :oficina => oficina,
-      :directordept => dir,
-      :gerentesede => sedeEmpleado
-    ) 
+    begin
+      $empleados.filter(:persona => personaEmpleado.get(:personaid)).update(
+        :gerentesede => @empleado['gerente']
+      ) 
+    rescue
+    end
 
     redirect '/menu'
   end
