@@ -193,34 +193,31 @@ class Main < Sinatra::Base
 
     personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
     sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
-
-    puts sedeEmpleado
-
     empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
 
-    #begin
-      edificioEmpleado.update(
+    begin
+      empleadoEmpleado.update(
         :sueldo => @empleado['sueldo']
       ) 
-    #rescue
-    #end
+    rescue
+    end
 
     begin
-      edificioEmpleado.update(
+      empleadoEmpleado.update(
         :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida'])
       ) 
     rescue
     end
 
     begin
-      edificioEmpleado.update(
+      empleadoEmpleado.update(
         :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid)))
       ) 
     rescue
     end
 
     begin
-      edificioEmpleado.update(
+      empleadoEmpleado.update(
         :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado)
       ) 
     rescue
@@ -228,7 +225,7 @@ class Main < Sinatra::Base
 
     begin
       if (@empleado['gerente'])
-        edificioEmpleado.update(
+        empleadoEmpleado.update(
           :gerentesede => sedeEmpleado
         ) 
       end
