@@ -327,16 +327,8 @@ class Main < Sinatra::Base
 
     sedeHuesped = $sedes.filter(:nombre => @res['sede']).get(:sedeid)
     edificiosHuesped = $edificios.filter(:sede => sedeHuesped).select(:edificioid).all.map{ |x| x[:edificioid] }
-
-    puts edificiosHuesped
-
     pisosHuesped = $pisos.filter(:edificio => edificiosHuesped).select(:pisoid).all.map{ |x| x[:pisoid] }
-
-    puts pisosHuesped
-
     cuartosHuesped = $cuartos.filter(:piso => pisosHuesped).select(:cuartoid).all.map{ |x| x[:cuartoid] }
-
-    puts cuartosHuesped
 
     habitacionesLibres = $habitaciones.filter(:cuarto => cuartosHuesped).exclude(:habitacionid => habitacionesOcupadas).select(:habitacionid).all.map{ |x| x[:habitacionid] }
     habitacionHuesped = habitacionesLibres.sample()
@@ -383,6 +375,18 @@ class Main < Sinatra::Base
       dir: empleadoEmpleado.get(:directordept),
       gerente: (true & empleadoEmpleado.get(:gerentesede))
     }.to_json
+  end
+
+  get '/verReservaciones' do
+    content_type :json
+
+    personaHuesped = $personas.filter(:nombre => session[:user]['name'])
+    huespedHuesped = $huespedes.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
+    reservacionesHuesped = $reservaciones.filter(:huesped => huespedHuesped).all
+
+    puts reservacionesHuesped
+
+    reservacionesHuesped.to_json
   end
 
   get '/logOut' do
