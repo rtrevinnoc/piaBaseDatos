@@ -54,22 +54,40 @@ class Main < Sinatra::Base
   end
 
   def setOrGetProducto(nombre, cantidad, fechaVencimiento, precioUnitario, proveedor)
-    begin
-      return $productos.insert( 
-                        :nombre => nombre,
-                        :cantidad => cantidad,
-                        :fechavencimiento => fechaVencimiento,
-                        :preciounitario => precioUnitario,
-                        :proveedor => proveedor,
-     )
-    rescue
-      producto = $productos.filter(:nombre => nombre)
-      producto.update(
-        :cantidad => producto.get(:cantidad) + cantidad,
-        :fechavencimiento => fechaVencimiento,
-        :precioUnitario => precioUnitario
-      )
-      return producto.get(:productoid)
+    if fechaVencimiento != ""
+      begin
+        return $productos.insert( 
+                          :nombre => nombre,
+                          :cantidad => cantidad,
+                          :fechavencimiento => Date.parse(fechaVencimiento),
+                          :preciounitario => precioUnitario,
+                          :proveedor => proveedor,
+       )
+      rescue
+        producto = $productos.filter(:nombre => nombre)
+        producto.update(
+          :cantidad => producto.get(:cantidad) + cantidad,
+          :fechavencimiento => Date.parse(fechaVencimiento),
+          :precioUnitario => precioUnitario
+        )
+        return producto.get(:productoid)
+      end
+    else
+      begin
+        return $productos.insert( 
+                          :nombre => nombre,
+                          :cantidad => cantidad,
+                          :preciounitario => precioUnitario,
+                          :proveedor => proveedor,
+       )
+      rescue
+        producto = $productos.filter(:nombre => nombre)
+        producto.update(
+          :cantidad => producto.get(:cantidad) + cantidad,
+          :precioUnitario => precioUnitario
+        )
+        return producto.get(:productoid)
+      end
     end
   end
 
@@ -289,7 +307,7 @@ class Main < Sinatra::Base
     proveedorId = $proveedores.filter(:nombre => @prod['proveedor']).get(:proveedorid)
     deptCompradorId = $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid)
     puts @prod['fechaVencimiento']
-    productoId = setOrGetProducto(@prod['nombre'], @prod['cantidad'], Date.parse(@prod['fechaVencimiento']), @prod['precioUnitario'], proveedorId)
+    productoId = setOrGetProducto(@prod['nombre'], @prod['cantidad'], @prod['fechaVencimiento'], @prod['precioUnitario'], proveedorId)
 
     $ordenes.insert(
       :producto => productoId,
