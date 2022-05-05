@@ -193,6 +193,9 @@ class Main < Sinatra::Base
 
     personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
     sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+    edificioEmpleado = $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado)
+    pisoEmpleado = $pisos.filter(:numero => @empleado['piso'], :edificio => edificioEmpleado.get(:edificioid))
+    cuartoEmpleado = $cuartos.filter(:numero => @empleado['cuarto'], :piso => pisoEmpleado.get(:pisoid))
     empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
 
     begin
@@ -211,7 +214,7 @@ class Main < Sinatra::Base
 
     #begin
       empleadoEmpleado.update(
-        :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid)))
+        :oficina => $oficinas.filter(:cuarto => cuartoEmpleado)
       ) 
     #rescue
     #end
