@@ -65,7 +65,7 @@ class Main < Sinatra::Base
       producto = $productos.filter(:nombre => nombre)
       producto.update(
         :cantidad => (producto.get(:cantidad).to_i + cantidad.to_i).to_s,
-        :precioUnitario => precioUnitario
+        :preciounitario => precioUnitario
       )
       return producto.get(:productoid)
     end
