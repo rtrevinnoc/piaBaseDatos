@@ -330,6 +330,8 @@ class Main < Sinatra::Base
     pisoHuesped = $pisos.filter(:edificio => edificioHuesped).get(:pisoid)
     cuartoHuesped = $cuartos.filter(:piso => pisoHuesped).get(:cuartoid)
 
+    puts cuartoHuesped
+
     habitacionesLibres = $habitaciones.filter(:cuarto => cuartoHuesped).exclude(:habitacionid => habitacionesOcupadas).get(:habitacionid)
     habitacionHuesped = habitacionesLibres.sample()
 
