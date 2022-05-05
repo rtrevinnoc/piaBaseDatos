@@ -328,7 +328,7 @@ class Main < Sinatra::Base
     sedeHuesped = $sedes.filter(:nombre => @res['sede']).get(:sedeid)
     edificioHuesped = $edificios.filter(:sede => sedeHuesped).get(:edificioid)
     pisoHuesped = $pisos.filter(:edificio => edificioHuesped).get(:pisoid)
-    cuartoHuesped = $cuartos.filter(:piso => pisoEmpleado).get(:cuartoid)
+    cuartoHuesped = $cuartos.filter(:piso => pisoHuesped).get(:cuartoid)
 
     habitacionesLibres = $habitaciones.filter(:cuarto => cuartoHuesped).exclude(:habitacionid => habitacionesOcupadas).get(:habitacionid)
     habitacionHuesped = habitacionesLibres.sample()
