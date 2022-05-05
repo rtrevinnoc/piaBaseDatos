@@ -11,22 +11,21 @@ $(document).ready(function(){
 	const gerente = $('#empleadoGerente');
 
 	nombre.on("input", function() {
-		console.log(this.value)
 		$.getJSON('/verEmpleado', {
 			empleado: this.value
 		}, function(data) {
 			console.log(data)
 
-			nombre.value = data['nombre']
-			sueldo.value = data['sueldo']
-			entrada.value = data['entrada']
-			salida.value = data['salida']
-			sede.value = data['sede']
-			edificio.value = data['edificio']
-			piso.value = data['piso']
-			cuarto.value = data['cuarto']
-			dir.value = data['dir']
-			gerente.checked = data['gerente']
+			nombre.val(data['nombre'])
+			sueldo.val(data['sueldo'])
+			entrada.val(data['entrada'])
+			salida.val(data['salida'])
+			sede.val(data['sede'])
+			edificio.val(data['edificio'])
+			piso.val(data['piso'])
+			cuarto.val(data['cuarto'])
+			dir.val(data['dir'])
+			gerente.prop('checked', data['gerente'])
 		});
 	});
 })
