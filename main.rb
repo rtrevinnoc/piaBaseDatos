@@ -196,6 +196,12 @@ class Main < Sinatra::Base
     edificioEmpleado = $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado)
     pisoEmpleado = $pisos.filter(:numero => @empleado['piso'], :edificio => edificioEmpleado.get(:edificioid))
     cuartoEmpleado = $cuartos.filter(:numero => @empleado['cuarto'], :piso => pisoEmpleado.get(:pisoid))
+
+    puts sedeEmpleado
+    puts edificioEmpleado
+    puts pisoEmpleado
+    puts cuartoEmpleado
+
     empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
 
     begin
