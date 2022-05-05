@@ -209,12 +209,12 @@ class Main < Sinatra::Base
     rescue
     end
 
-    begin
+    #begin
       empleadoEmpleado.update(
         :oficina => $oficinas.filter(:cuarto => $cuartos.filter(:numero => @empleado['cuarto'], :piso => $pisos.filter(:numero => @empleado['piso'], :edificio => $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid) ).get(:pisoid)))
       ) 
-    rescue
-    end
+    #rescue
+    #end
 
     begin
       empleadoEmpleado.update(
