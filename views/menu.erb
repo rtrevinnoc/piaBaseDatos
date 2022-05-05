@@ -17,6 +17,7 @@
   </head>
   <body>
     <main class="form-signin mw-100 m-auto">
+      <% if session[:user]['class'] == "empleado" %>
       <h1 class="h3 mb-3 fw-normal">Hola <%= session[:user]['class'] %>, <%= @user.get(:nombre) %></h1>
 
       <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -371,6 +372,52 @@
 
         </div>
       </div>
+      <% elsif session[:user]['class'] == "cliente" %>
+      <h1 class="h3 mb-3 fw-normal">Hola <%= session[:user]['class'] %>, <%= @user.get(:nombre) %></h1>
+
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Registrar Sede</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="reservacion" role="tabpanel" aria-labelledby="reservacion-tab">
+
+          <form method="post" action="/registrarReservacion">
+            <h3 class="h3 mb-3 fw-normal">Registrar Reservacion</h3>
+
+            <div class="form-floating">
+              <input type="input" name="sede[name]" class="form-control" id="floatingInput" placeholder="Nombre">
+              <label for="floatingInput">Nombre</label>
+            </div>
+
+            <div class="form-floating">
+              <input type="input" name="sede[street]" class="form-control" id="floatingInput" placeholder="Calle y número">
+              <label for="floatingInput">Calle</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[zip]" class="form-control" id="floatingInput" placeholder="Codigo Postal">
+              <label for="floatingInput">Codigo Postal</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[city]" class="form-control" id="floatingInput" placeholder="Ciudad">
+              <label for="floatingInput">Ciudad</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[state]" class="form-control" id="floatingInput" placeholder="Estado">
+              <label for="floatingInput">Estado</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="sede[country]" class="form-control" id="floatingInput" placeholder="Pais">
+              <label for="floatingInput">Pais</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Reservacion</button>
+          </form>
+
+        </div>
+      </div>
+      <% end %>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
