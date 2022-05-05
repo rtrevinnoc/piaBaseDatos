@@ -328,6 +328,7 @@ class Main < Sinatra::Base
     sedeHuesped = $sedes.filter(:nombre => @res['sede']).get(:sedeid)
     edificiosHuesped = $edificios.filter(:sede => sedeHuesped).all.map{ |x| x[:edificioid] }
 
+    puts $edificios.filter(:sede => sedeHuesped).get(:edificioid)
     puts edificiosHuesped
 
     pisosHuesped = $pisos.filter(:edificio => edificiosHuesped).all.map{ |x| x[:pisoid] }
@@ -336,7 +337,7 @@ class Main < Sinatra::Base
 
     cuartosHuesped = $cuartos.filter(:piso => pisosHuesped).all.map{ |x| x[:cuartoid] }
 
-    puts cuartoHuesped
+    puts cuartosHuesped
 
     habitacionesLibres = $habitaciones.filter(:cuarto => cuartosHuesped).exclude(:habitacionid => habitacionesOcupadas).get(:habitacionid)
     habitacionHuesped = habitacionesLibres.sample()
