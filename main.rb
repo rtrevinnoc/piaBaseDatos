@@ -346,7 +346,7 @@ class Main < Sinatra::Base
       :llegada => fechaLlegada,
       :salida => fechaSalida,
       :huesped => huespedHuesped,
-      :aceptada => true
+      :aceptada => true,
       :pagada => false
     )
 
