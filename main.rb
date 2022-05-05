@@ -347,6 +347,7 @@ class Main < Sinatra::Base
       :salida => fechaSalida,
       :huesped => huespedHuesped,
       :aceptada => true
+      :pagada => false
     )
 
     $habitaciones.filter(:habitacionid => habitacionHuesped).update(
