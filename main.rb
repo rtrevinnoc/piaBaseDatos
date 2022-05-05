@@ -198,12 +198,12 @@ class Main < Sinatra::Base
 
     empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
 
-    begin
+    #begin
       edificioEmpleado.update(
         :sueldo => @empleado['sueldo']
       ) 
-    rescue
-    end
+    #rescue
+    #end
 
     begin
       edificioEmpleado.update(
