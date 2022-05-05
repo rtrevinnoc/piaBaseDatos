@@ -16,7 +16,6 @@ $(document).ready(function(){
 		}, function(data) {
 			console.log(data)
 
-			nombre.val(data['nombre'])
 			sueldo.val(data['sueldo'])
 			entrada.val(data['entrada'])
 			salida.val(data['salida'])
