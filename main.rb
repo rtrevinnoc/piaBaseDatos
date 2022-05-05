@@ -22,6 +22,7 @@ class Main < Sinatra::Base
   $proveedores = DB[:proveedores]
   $productos = DB[:productos]
   $ordenes = DB[:ordenescompra]
+  $productos_dept = DB[:departamentos_productos]
 
   def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
@@ -285,14 +286,21 @@ class Main < Sinatra::Base
     @prod = params['producto']
     total = @prod['cantidad'] * @prod['precioUnitario']
     proveedorId = $proveedores.filter(:nombre => @prod['proveedor']).get(:proveedorid)
+    deptCompradorId = $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid)
+    productoId = setOrGetProducto(@prod['nombre'], @prov['cantidad'], Date.parse(@prod['fechaVencimiento']), @prod['precioUnitario'], proveedorId)
 
     $ordenes.insert(
-      :producto => setOrGetProducto(@prod['nombre'], @prov['cantidad'], Date.parse(@prod['fechaVencimiento']), @prod['precioUnitario'], proveedorId),
+      :producto => productoId,
       :provedor => proveedorId,
       :total => total,
-      :comprador => $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid),
+      :comprador => deptCompradorId,
       :aprobada => false,
       :recibida => false
+    )
+
+    $productos_dept.insert(
+      :departamentoid => deptCompradorId,
+      :productoid => productoId
     )
 
     redirect '/menu'
