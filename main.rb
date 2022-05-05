@@ -54,40 +54,27 @@ class Main < Sinatra::Base
   end
 
   def setOrGetProducto(nombre, cantidad, fechaVencimiento, precioUnitario, proveedor)
-    if fechaVencimiento != ""
-      begin
-        return $productos.insert( 
-                          :nombre => nombre,
-                          :cantidad => cantidad,
-                          :fechavencimiento => Date.parse(fechaVencimiento),
-                          :preciounitario => precioUnitario,
-                          :proveedor => proveedor,
-       )
-      rescue
-        producto = $productos.filter(:nombre => nombre)
-        producto.update(
-          :cantidad => producto.get(:cantidad) + cantidad,
-          :fechavencimiento => Date.parse(fechaVencimiento),
-          :precioUnitario => precioUnitario
-        )
-        return producto.get(:productoid)
-      end
-    else
-      begin
-        return $productos.insert( 
-                          :nombre => nombre,
-                          :cantidad => cantidad,
-                          :preciounitario => precioUnitario,
-                          :proveedor => proveedor,
-       )
-      rescue
-        producto = $productos.filter(:nombre => nombre)
-        producto.update(
-          :cantidad => producto.get(:cantidad) + cantidad,
-          :precioUnitario => precioUnitario
-        )
-        return producto.get(:productoid)
-      end
+    begin
+      return $productos.insert( 
+                        :nombre => nombre,
+                        :cantidad => cantidad,
+                        :preciounitario => precioUnitario,
+                        :proveedor => proveedor,
+     )
+    rescue
+      producto = $productos.filter(:nombre => nombre)
+      producto.update(
+        :cantidad => (producto.get(:cantidad).to_i + cantidad.to_i).to_s,
+        :precioUnitario => precioUnitario
+      )
+      return producto.get(:productoid)
+    end
+
+    begin
+      $productos.filter(:nombre => nombre).update(
+        :fechavencimiento => Date.parse(fechaVencimiento)
+      )
+    rescue
     end
   end
 
