@@ -290,7 +290,7 @@ class Main < Sinatra::Base
       :producto => setOrGetProducto(@prod['nombre'], @prov['cantidad'], Date.parse(@prod['fechaVencimiento']), @prod['precioUnitario'], proveedorId),
       :provedor => proveedorId,
       :total => total,
-      :comprador => $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid)
+      :comprador => $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid),
       :aprobada => false,
       :recibida => false
     )
