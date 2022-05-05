@@ -32,7 +32,7 @@ $(document).ready(function(){
 		console.log(data);
 
 		data.forEach(res => {
-			reservaciones.append( "<tr><td>" +res['sede'] "</td><td>" +res['edificio'] "</td><td>" +res['piso'] "</td><td>" +res['habitacion'] "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['salida'] "</td></tr>" );
+			reservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['salida'] + "</td></tr>" );
 		});
 	});
 })
