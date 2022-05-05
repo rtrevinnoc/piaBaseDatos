@@ -30,8 +30,9 @@ $(document).ready(function(){
 
 	$.getJSON('/verReservaciones', function(data) {
 		console.log(data);
-		//data.forEach((res) => {
-			//reservaciones.append( "<tr><td>" + res['habitacion'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['salida'] "</td></tr>" );
-		//})
+
+		data.forEach(res => {
+			reservaciones.append( "<tr><td>" +res['sede'] "</td><td>" +res['edificio'] "</td><td>" +res['piso'] "</td><td>" +res['habitacion'] "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['salida'] "</td></tr>" );
+		});
 	});
 })

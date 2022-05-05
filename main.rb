@@ -384,28 +384,18 @@ class Main < Sinatra::Base
     huespedHuesped = $huespedes.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
     reservacionesHuesped = $reservaciones.filter(:huesped => huespedHuesped).all
 
-    reservacionesHuesped.map do |d|
+    reservacionesHuesped.each do |d|
       habitacionHuesped = $habitaciones.filter(:habitacionid => d[:habitacion])
       cuartoHuesped = $cuartos.filter(:cuartoid => habitacionHuesped.get(:cuarto))
       pisoHuesped = $pisos.filter(:pisoid => cuartoHuesped.get(:piso))
       edificioHuesped = $edificios.filter(:edificioid => pisoHuesped.get(:edificio))
       sedeHuesped = $sedes.filter(:sedeid => edificioHuesped.get(:sede))
 
-      puts d
-      puts d[:habitacion]
-      puts habitacionHuesped.get(:categoria)
-      puts cuartoHuesped.get(:numero)
-      puts pisoHuesped.get(:numero)
-      puts edificioHuesped.get(:nombre)
-      puts sedeHuesped.get(:nombre)
-
       d[:categoria] = habitacionHuesped.get(:categoria)
       d[:cuarto] = cuartoHuesped.get(:numero)
       d[:piso] = pisoHuesped.get(:numero)
       d[:edificio] = edificioHuesped.get(:nombre)
       d[:sede] = sedeHuesped.get(:nombre)
-
-      d
     end
 
     puts reservacionesHuesped
