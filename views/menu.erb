@@ -38,6 +38,9 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="empleado-tab" data-bs-toggle="tab" data-bs-target="#empleado" type="button" role="tab" aria-controls="dept" aria-selected="false">Actualizar empleado</button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="producto-tab" data-bs-toggle="tab" data-bs-target="#producto" type="button" role="tab" aria-controls="dept" aria-selected="false">Pedir producto</button>
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -281,6 +284,86 @@
             <label class="form-check-label" for="floatingInput">Gerencia</label>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Actualizar Empleado</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade show" id="proveedor" role="tabpanel" aria-labelledby="proveedor">
+
+          <form method="post" action="/registrarProveedor">
+            <h3 class="h3 mb-3 fw-normal">Registrar Proveedor</h3>
+
+            <div class="form-floating">
+              <input type="input" name="proveedor[nombre]" class="form-control" id="floatingInput" placeholder="Nombre">
+              <label for="floatingInput">Nombre</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[tel]" class="form-control" id="floatingInput" placeholder="Telefono">
+              <label for="floatingInput">Telefono</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[street]" class="form-control" id="floatingInput" placeholder="Calle y número">
+              <label for="floatingInput">Calle</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[zip]" class="form-control" id="floatingInput" placeholder="Codigo Postal">
+              <label for="floatingInput">Codigo Postal</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[city]" class="form-control" id="floatingInput" placeholder="Ciudad">
+              <label for="floatingInput">Ciudad</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[state]" class="form-control" id="floatingInput" placeholder="Estado">
+              <label for="floatingInput">Estado</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[country]" class="form-control" id="floatingInput" placeholder="Pais">
+              <label for="floatingInput">Pais</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[email]" class="form-control" id="floatingInput" placeholder="Correo Electronico">
+              <label for="floatingInput">Correo Electronico</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="proveedor[url]" class="form-control" id="floatingInput" placeholder="URL">
+              <label for="floatingInput">URL</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Proveedor</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade show" id="producto" role="tabpanel" aria-labelledby="producto-tab">
+
+          <form method="post" action="/pedirProducto">
+            <h3 class="h3 mb-3 fw-normal">Pedir producto</h3>
+
+            <div class="form-floating">
+              <input type="input" name="producto[nombre]" class="form-control" placeholder="Nombre">
+              <label for="floatingInput">Nombre</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="producto[precioUnitario]" class="form-control" placeholder="Precio Unitario">
+              <label for="floatingInput">Precio Unitario</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="producto[cantidad]" class="form-control" placeholder="Cantidad">
+              <label for="floatingInput">Cantidad</label>
+            </div>
+            <div class="form-floating">
+              <input type="date" name="producto[fechaVencimiento]" class="form-control" placeholder="Fecha de Vencimiento">
+              <label for="floatingInput">Fecha de Vencimiento</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="producto[proveedor]" class="form-control" placeholder="Nombre del Proveedor">
+              <label for="floatingInput">Nombre del Proveedor</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="producto[dept]" class="form-control" placeholder="Nombre del Departamento Comprador">
+              <label for="floatingInput">Nombre del Departamento Comprador</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Pedir producto</button>
           </form>
 
         </div>

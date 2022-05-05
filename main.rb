@@ -19,6 +19,9 @@ class Main < Sinatra::Base
   $oficinas = DB[:oficinas]
   $departamentos = DB[:departamentos]
   $horarios = DB[:horarios]
+  $proveedores = DB[:proveedores]
+  $productos = DB[:productos]
+  $ordenes = DB[:ordenescompra]
 
   def setOrGetUbicacion(calle, cp, ciudad, estado, pais)
     begin
@@ -46,6 +49,26 @@ class Main < Sinatra::Base
       )
     rescue
       return $horarios.filter(:entrada => entrada, :salida => salida).get(:horarioid)
+    end
+  end
+
+  def setOrGetProducto(nombre, cantidad, fechaVencimiento, precioUnitario, proveedor)
+    begin
+      return $productos.insert( 
+                        :nombre => nombre,
+                        :cantidad => cantidad,
+                        :fechavencimiento => fechaVencimiento,
+                        :preciounitario => precioUnitario,
+                        :proveedor => proveedor,
+     )
+    rescue
+      producto = $productos.filter(:nombre => nombre)
+      producto.update(
+        :cantidad => producto.get(:cantidad) + cantidad,
+        :fechavencimiento => fechaVencimiento,
+        :precioUnitario => precioUnitario
+      )
+      return producto.get(:productoid)
     end
   end
 
@@ -218,16 +241,16 @@ class Main < Sinatra::Base
     rescue
     end
 
-    #begin
+    begin
       empleadoEmpleado.update(
         :oficina => $oficinas.filter(:cuarto => cuartoEmpleado).get(:oficinaid)
       ) 
-    #rescue
-    #end
+    rescue
+    end
 
     begin
       empleadoEmpleado.update(
-        :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado)
+        :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado).get(:departamentoid)
       ) 
     rescue
     end
@@ -240,6 +263,37 @@ class Main < Sinatra::Base
       end
     rescue
     end
+
+    redirect '/menu'
+  end
+
+  post '/registrarProveedor' do
+    @prov = params['proveedor']
+
+    $proveedores.insert( 
+      :nombre => @prov['nombre'],
+      :direccion => setOrGetUbicacion(@prov['street'], @prov['zip'], @prov['city'], @prov['state'], @prov['country']),
+      :telefono => @prov['tel'],
+      :email => @prov['email'],
+      :url => @prov['url']
+    )
+
+    redirect '/menu'
+  end
+
+  post '/pedirProducto' do
+    @prod = params['producto']
+    total = @prod['cantidad'] * @prod['precioUnitario']
+    proveedorId = $proveedores.filter(:nombre => @prod['proveedor']).get(:proveedorid)
+
+    $ordenes.insert(
+      :producto => setOrGetProducto(@prod['nombre'], @prov['cantidad'], Date.parse(@prod['fechaVencimiento']), @prod['precioUnitario'], proveedorId),
+      :provedor => proveedorId,
+      :total => total,
+      :comprador => $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid)
+      :aprobada => false,
+      :recibida => false
+    )
 
     redirect '/menu'
   end
