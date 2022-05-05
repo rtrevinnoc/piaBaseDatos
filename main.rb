@@ -326,15 +326,15 @@ class Main < Sinatra::Base
     huespedHuesped = $huespedes.filter(:persona => personaHuesped.get(:personaid)).get(:huespedid)
 
     sedeHuesped = $sedes.filter(:nombre => @res['sede']).get(:sedeid)
-    edificiosHuesped = $edificios.filter(:sede => sedeHuesped).all[:edificioid]
+    edificiosHuesped = $edificios.filter(:sede => sedeHuesped).all.map{ |x| x[:edificioid] }
 
     puts edificiosHuesped
 
-    pisosHuesped = $pisos.filter(:edificio => edificiosHuesped).all[:pisoid]
+    pisosHuesped = $pisos.filter(:edificio => edificiosHuesped).all.map{ |x| x[:pisoid] }
 
     puts pisosHuesped
 
-    cuartosHuesped = $cuartos.filter(:piso => pisosHuesped).all[:cuartoid]
+    cuartosHuesped = $cuartos.filter(:piso => pisosHuesped).all.map{ |x| x[:cuartoid] }
 
     puts cuartoHuesped
 
