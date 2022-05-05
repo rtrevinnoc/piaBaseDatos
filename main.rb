@@ -193,6 +193,9 @@ class Main < Sinatra::Base
 
     personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
     sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+
+    puts sedeEmpleado
+
     empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
 
     begin
