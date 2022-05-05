@@ -292,7 +292,7 @@ class Main < Sinatra::Base
     total = @prod['cantidad'].to_i * @prod['precioUnitario'].to_f
     puts total
     proveedorId = $proveedores.filter(:nombre => @prod['proveedor']).get(:proveedorid)
-    deptCompradorId = $departamentos.filter(:nombre => @prod['dept']).get(:departamentoid)
+    empleadoCompradorId = $empleados.filter(:nombre => @prod['empleado']).get(:empleadoid)
     puts @prod['fechaVencimiento']
     productoId = setOrGetProducto(@prod['nombre'], @prod['cantidad'], @prod['fechaVencimiento'], @prod['precioUnitario'], proveedorId)
 
@@ -300,7 +300,7 @@ class Main < Sinatra::Base
       :producto => productoId,
       :proveedor => proveedorId,
       :total => total,
-      :comprador => deptCompradorId,
+      :comprador => empleadoCompradorId,
       :aprobada => false,
       :recibida => false
     )
