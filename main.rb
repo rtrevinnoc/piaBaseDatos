@@ -188,6 +188,8 @@ class Main < Sinatra::Base
 
   post '/actualizarEmpleado' do
     @empleado = params['empleado']
+    
+    puts @empleado['gerente']
 
     personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
     sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
