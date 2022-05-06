@@ -120,6 +120,8 @@ class Main < Sinatra::Base
         :sueldo => nil,
         :persona => personaUserId,
         :horario => nil,
+        :gerentesede => nil,
+        :directordept => nil
       )
     elsif @user['class'] == "cliente"
       $huespedes.insert(
