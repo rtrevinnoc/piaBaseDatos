@@ -202,89 +202,91 @@ class Main < Sinatra::Base
   end
 
   post '/registrarEdificio' do
-    @edificio = params['edificio'] 
+    if session[:user]['admin']
+      @edificio = params['edificio'] 
 
-    $edificios.insert(
-      :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
-      :nombre => @edificio['name'],
-      :posicion => @edificio['posicion'],
-      :tipo => @edificio['tipo'],
-    )
+      $edificios.insert(
+        :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
+        :nombre => @edificio['name'],
+        :posicion => @edificio['posicion'],
+        :tipo => @edificio['tipo'],
+      )
 
-    redirect '/menu'
+      redirect '/menu'
+    end
   end
 
   post '/registrarPiso' do
-    @piso = params['piso']
-    edificioId = $edificios.filter(:nombre => @piso['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid)
+    if session[:user]['admin']
+      @piso = params['piso']
+      edificioId = $edificios.filter(:nombre => @piso['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid)
+      ultimoPiso = $pisos.filter(:edificio => edificioId).select(:numero).all.map{ |x| x[:numero] }.max
 
-    puts $pisos.filter(:edificio => edificioId).select(:numero).all
+      $pisos.insert( 
+                    :edificio => edificioId,
+                    :numero => ultimoPiso + 1,
+                    :categoria => @piso['categoria'],
+                   )
 
-    $pisos.insert( 
-      :edificio => edificioId,
-      :numero => @piso['numero'],
-      :categoria => @piso['categoria'],
-    )
-
-    redirect '/menu'
+      redirect '/menu'
+    end
   end
 
   post '/registrarCuarto' do
-    @cuarto = params['cuarto']
+    if session[:user]['admin']
+      @cuarto = params['cuarto']
+      pisoId = $pisos.filter(:numero => @cuarto['piso'], :edificio => $edificios.filter(:nombre => @cuarto['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid) ).get(:pisoid)
+      #ultimoCuarto = $cuartos.filter(:piso => pisoId).select(:numero).all.map{ |x| x[:numero] }.max
 
-    cuartoId = $cuartos.insert( 
-      :piso => $pisos.filter(:numero => @cuarto['piso'], :edificio => $edificios.filter(:nombre => @cuarto['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid) ).get(:pisoid),
-      :numero => @cuarto['numero'],
-      :ancho => @cuarto['ancho'],
-      :largo => @cuarto['largo'],
-      :telefono => @cuarto['tel']
-    )
+      cuartoId = $cuartos.insert( 
+        :piso => pisoId,
+        :numero => @cuarto['numero'],
+        :ancho => @cuarto['ancho'],
+        :largo => @cuarto['largo'],
+        :telefono => @cuarto['tel']
+      )
 
-    if (@cuarto['proposito'] == "habitacion")
-      $habitaciones.insert(
-        :cuarto => cuartoId,
-        :categoria => @cuarto['categoria'],
-        :precio => @cuarto['precio'],
-        :vacante => true
-      ) 
-    elsif (@cuarto['proposito'] == "oficina") 
-      $oficinas.insert(
-        :cuarto => cuartoId,
-        :categoria => @cuarto['categoria'],
-        :departamento => $departamentos.filter(:nombre => @cuarto['dept']).get(:departamentoid)
-      ) 
+      if (@cuarto['proposito'] == "habitacion")
+        $habitaciones.insert(
+          :cuarto => cuartoId,
+          :categoria => @cuarto['categoria'],
+          :precio => @cuarto['precio'],
+          :vacante => true
+        ) 
+      elsif (@cuarto['proposito'] == "oficina") 
+        $oficinas.insert(
+          :cuarto => cuartoId,
+          :categoria => @cuarto['categoria'],
+          :departamento => $departamentos.filter(:nombre => @cuarto['dept']).get(:departamentoid)
+        ) 
+      end
+
+      redirect '/menu'
     end
-
-    redirect '/menu'
   end
 
   post '/registrarDept' do
-    @dept = params['dept']
+    if session[:user]['admin']
+      @dept = params['dept']
 
-    $departamentos.insert( 
-      :nombre => @dept['name'],
-      :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
-    )
+      $departamentos.insert( 
+                            :nombre => @dept['name'],
+                            :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
+                           )
 
-    redirect '/menu'
+      redirect '/menu'
+    end
   end
 
   post '/actualizarEmpleado' do
     if session[:user]['admin']
       @empleado = params['empleado']
 
-      puts @empleado['gerente']
-
       personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
       sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
       edificioEmpleado = $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid)
       pisoEmpleado = $pisos.filter(:numero => @empleado['piso'], :edificio => edificioEmpleado).get(:pisoid)
       cuartoEmpleado = $cuartos.filter(:numero => @empleado['cuarto'], :piso => pisoEmpleado).get(:cuartoid)
-
-      puts sedeEmpleado
-      puts edificioEmpleado
-      puts pisoEmpleado
-      puts cuartoEmpleado
 
       empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
 
@@ -332,17 +334,19 @@ class Main < Sinatra::Base
   end
 
   post '/registrarProveedor' do
-    @prov = params['proveedor']
+    if session[:user]['admin']
+      @prov = params['proveedor']
 
-    $proveedores.insert( 
-      :nombre => @prov['nombre'],
-      :direccion => setOrGetUbicacion(@prov['street'], @prov['zip'], @prov['city'], @prov['state'], @prov['country']),
-      :telefono => @prov['tel'],
-      :email => @prov['email'],
-      :url => @prov['url']
-    )
+      $proveedores.insert( 
+                          :nombre => @prov['nombre'],
+                          :direccion => setOrGetUbicacion(@prov['street'], @prov['zip'], @prov['city'], @prov['state'], @prov['country']),
+                          :telefono => @prov['tel'],
+                          :email => @prov['email'],
+                          :url => @prov['url']
+                         )
 
-    redirect '/menu'
+      redirect '/menu'
+    end
   end
 
   post '/pedirProducto' do
@@ -476,7 +480,7 @@ class Main < Sinatra::Base
       d[:edificio] = edificio.get(:nombre)
       d[:sede] = sede.get(:nombre)
 
-      if (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre))
+      if (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password'].get(:nombre)).get(:nombre))
         reservaciones.delete(d)
       end
     end
