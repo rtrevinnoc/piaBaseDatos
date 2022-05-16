@@ -53,7 +53,7 @@ $(document).ready(function(){
 		data.forEach(res => {
 			pagada = "";
 			if (res['pagada'] === true) {
-				pagada = "checked ";
+				pagada = "checked disabled ";
 			}
 
 			reservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td><input type='checkbox' class='btn-check' id='r" + res['reservacionid'] + "' " + pagada + "autocomplete='off' onclick='window.pagarReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='r" + res['reservacionid'] + "'>Pagar</label></td></tr>" );
@@ -65,7 +65,7 @@ $(document).ready(function(){
 	$.getJSON('/adminReservaciones', function(data) {
 		data.forEach(res => {
 			checkin = "";
-			if (res['checkin'] === true) {
+			if (res['checkin'] === false) {
 				checkin = "checked ";
 			}
 
