@@ -26,7 +26,7 @@ $(document).ready(function(){
 		});
 	});
 
-	pagarReservacion(id) {
+	function pagarReservacion(id) {
 		$.post("/pagarReservacion", { id: id })
 			.done(function( data ) {
 				console.log(data)
