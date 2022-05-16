@@ -265,16 +265,13 @@
               <label for="floatingInput">Hora de Salida</label>
             </div>
 
-            <div class="form-floating input-group">
-              <div class="input-group-prepend">
-                <label for="floatingSelect" class="input-group-text">Edificio</label>
-              </div>
-              <select name="empleado[edificio]" class="form-control" id="floatingSelect">
-                <option selected disabled>Escoge...</option>
-                <% @edificiosTotal.each do |edificio| %>
-                <option value="<%= edificio %>"><%= edificio %></option>
-                <% end %>
-              </select>
+            <div class="form-floating">
+              <input type="input" name="empleado[sede]" class="form-control" id="empleadoSede" placeholder="Sede">
+              <label for="floatingInput">Sede</label>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="empleado[edificio]" class="form-control" id="empleadoEdificio" placeholder="Edificio">
+              <label for="floatingInput">Edificio</label>
             </div>
             <div class="form-floating">
               <input type="number" name="empleado[piso]" class="form-control" id="empleadoPiso" placeholder="Piso">
