@@ -63,12 +63,12 @@ $(document).ready(function(){
 	const adminReservaciones = $('#adminReservacionesTabla');
 
 	$.getJSON('/adminReservaciones', function(data) {
-		checkin = "";
-		if (res['checkin'] === true) {
-			checkin = "checked ";
-		}
-
 		data.forEach(res => {
+			checkin = "";
+			if (res['checkin'] === true) {
+				checkin = "checked ";
+			}
+
 			adminReservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['pagada'] + "</td><td><input type='checkbox' class='btn-check' id='c" + res['reservacionid'] + "' " + checkin + "autocomplete='off' onclick='window.checkinReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='c" + res['reservacionid'] + "'>Check In</label></td></tr>" );
 		});
 	});
