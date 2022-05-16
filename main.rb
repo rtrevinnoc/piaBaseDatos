@@ -473,6 +473,7 @@ class Main < Sinatra::Base
       sede = $sedes.filter(:sedeid => edificio.get(:sede))
 
       d[:categoria] = habitacion.get(:categoria)
+      d[:checkin] = habitacion.get(:vacante)
       d[:cuarto] = cuarto.get(:numero)
       d[:piso] = piso.get(:numero)
       d[:edificio] = edificio.get(:nombre)
