@@ -149,8 +149,8 @@ class Main < Sinatra::Base
 
     if (!@user.empty?)
       if (session[:user]['class'] == "empleado")
+        empleadoUser = $empleados.filter(:persona => @user.get(:personaid))
         if (!empleadoUser.empty?)
-          empleadoUser = $empleados.filter(:persona => @user.get(:personaid))
           session[:user]['admin'] = empleadoUser.get(:admin)
 
           @org = {}
