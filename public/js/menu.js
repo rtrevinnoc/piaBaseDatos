@@ -42,7 +42,7 @@ $(document).ready(function(){
 			.done(function( data ) {
 				console.log(data)
 
-				$('#c' + id).prop('checked', !data)
+				$('#c' + id).prop('checked', data)
 			}
 		);
 	}
