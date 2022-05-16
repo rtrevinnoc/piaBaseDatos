@@ -163,7 +163,7 @@ class Main < Sinatra::Base
               cuartosDict = {}
               cuartos = $cuartos.filter(:piso => piso[:pisoid]).all
               cuartos.each do |cuarto|
-                cuartosDict[cuarto[:numero]] = {'largo' => cuarto[:largo], 'ancho' => cuarto[:ancho]), 'tel' => cuarto.get(:telefono)}
+                cuartosDict[cuarto[:numero]] = {'largo' => cuarto[:largo], 'ancho' => cuarto[:ancho], 'tel' => cuarto[:telefono]}
               end
 
               pisosDict[piso[:numero]] = {'categoria' => piso[:categoria], 'cuartos' => cuartosDict}
