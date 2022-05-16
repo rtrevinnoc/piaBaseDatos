@@ -500,6 +500,7 @@ class Main < Sinatra::Base
   post '/checkinReservacion' do
     reservacionId = params['id']
     vacancia = params['vacancia']
+    reservacion = $reservaciones.filter(:reservacionid => reservacionId)
 
     if vacancia.downcase == "true"
       vacancia = true
@@ -508,7 +509,11 @@ class Main < Sinatra::Base
     end
 
     begin
-      $habitaciones.filter(:habitacionid => $reservaciones.filter(:reservacionid => reservacionId).get(:habitacion)).update(:vacante => vacancia)
+      if reservacion.get(:pagada)
+        $habitaciones.filter(:habitacionid => reservacion.get(:habitacion)).update(:vacante => vacancia)
+      else
+        return false
+      end
 
       return true
     rescue
