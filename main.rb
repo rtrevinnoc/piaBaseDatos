@@ -158,18 +158,18 @@ class Main < Sinatra::Base
           edificios = $edificios.filter(:sede => sede).all
           edificios.each do |edificio|
             pisosDict = {}
-            pisos = $pisos.filter(:edificio => edificio.get(:edificioid)).all
+            pisos = $pisos.filter(:edificio => edificio[:edificioid]).all
             pisos.each do |piso|
               cuartosDict = {}
-              cuartos = $cuartos.filter(:piso => piso.get(:pisoid)).all
+              cuartos = $cuartos.filter(:piso => piso[:pisoid]).all
               cuartos.each do |cuarto|
-                cuartosDict[cuarto.get(:numero)] = {'largo' => cuarto.get(:largo), 'ancho' => cuarto.get(:ancho), 'tel' => cuarto.get(:telefono)}
+                cuartosDict[cuarto[:numero]] = {'largo' => cuarto[:largo], 'ancho' => cuarto[:ancho]), 'tel' => cuarto.get(:telefono)}
               end
 
-              pisosDict[piso.get(:numero)] = {'categoria' => piso.get(:categoria), 'cuartos' => cuartosDict}
+              pisosDict[piso[:numero]] = {'categoria' => piso[:categoria], 'cuartos' => cuartosDict}
             end
 
-            @org[edificio.get(:nombre)] = {'tipo' => edificio.get(:tipo), 'pos' => edificio.get(:posicion), 'pisos' => pisosDict}
+            @org[edificio[:nombre]] = {'tipo' => edificio[:tipo], 'pos' => edificio[:posicion], 'pisos' => pisosDict}
           end
 
           puts @org
