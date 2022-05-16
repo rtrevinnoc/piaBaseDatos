@@ -79,6 +79,16 @@ class Main < Sinatra::Base
     end
   end
 
+  def getSedeEmpleado(name, password)
+    personaEmpleado = $personas.filter(:nombre => name, :password => password)
+    empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
+    oficinaEmpleado = $oficinas.filter(:oficinaid => empleadoEmpleado.get(:oficina))
+    cuartoEmpleado = $cuartos.filter(:cuartoid => oficinaEmpleado.get(:cuarto))
+    pisoEmpleado = $pisos.filter(:pisoid => cuartoEmpleado.get(:piso))
+    edificioEmpleado = $edificios.filter(:edificioid => pisoEmpleado.get(:edificio))
+    return $sedes.filter(:sedeid => edificioEmpleado.get(:sede))
+  end
+
   get '/' do
     @hola = "hola"
 
@@ -111,7 +121,8 @@ class Main < Sinatra::Base
     session[:user] = {
       'name' => @user['name'],
       'password' => @user['password'],
-      'class' => @user['class']
+      'class' => @user['class'],
+      'admin' => false
     }
 
     if @user['class'] == "empleado"
@@ -121,7 +132,8 @@ class Main < Sinatra::Base
         :persona => personaUserId,
         :horario => nil,
         :gerentesede => nil,
-        :directordept => nil
+        :directordept => nil,
+        :admin => false
       )
     elsif @user['class'] == "cliente"
       $huespedes.insert(
@@ -135,29 +147,65 @@ class Main < Sinatra::Base
   get '/menu' do
     @user = $personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
 
-    if (!@user.empty? && ((session[:user]['class'] == "empleado" && !$empleados.filter(:persona => @user.get(:personaid)).empty?) || (session[:user]['class'] == "cliente" && !$huespedes.filter(:persona => @user.get(:personaid)).empty?) ))
-      erb :menu
+    if (!@user.empty?)
+      if (session[:user]['class'] == "empleado")
+        if (!empleadoUser.empty?)
+          empleadoUser = $empleados.filter(:persona => @user.get(:personaid))
+          session[:user]['admin'] = empleadoUser.get(:admin)
+
+          @org = {}
+          sede = getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
+          edificios = $edificios.filter(:sede => sede).all
+          edificios.each do |edificio|
+            pisosDict = {}
+            pisos = $pisos.filter(:edificio => edificio.get(:edificioid)).all
+            pisos.each do |piso|
+              cuartosDict = {}
+              cuartos = $cuartos.filter(:piso => piso.get(:pisoid)).all
+              cuartos.each do |cuarto|
+                cuartosDict[cuarto.get(:numero)] = {'largo' => cuarto.get(:largo), 'ancho' => cuarto.get(:ancho), 'tel' => cuarto.get(:telefono)}
+              end
+
+              pisosDict[piso.get(:numero)] = {'categoria' => piso.get(:categoria), 'cuartos' => cuartosDict}
+            end
+
+            @org[edificio.get(:nombre)] = {'tipo' => edificio.get(:tipo), 'pos' => edificio.get(:posicion), 'pisos' => pisosDict}
+          end
+
+          puts @org
+
+          erb :menu
+        else
+          return "No se encontró el usuario."
+        end
+      elsif (session[:user]['class'] == "cliente" && !$huespedes.filter(:persona => @user.get(:personaid)).empty?)
+        erb :menu
+      end
     else
       return "No se encontró el usuario."
     end
   end
 
   post '/registrarSede' do
-    @sede = params['sede']
+    if session[:user]['admin']
+      @sede = params['sede']
 
-    $sedes.insert(
-      :nombre => @sede['name'],
-      :direccion => setOrGetUbicacion(@sede['street'], @sede['zip'], @sede['city'], @sede['state'], @sede['country'])
-    )
+      $sedes.insert(
+        :nombre => @sede['name'],
+        :direccion => setOrGetUbicacion(@sede['street'], @sede['zip'], @sede['city'], @sede['state'], @sede['country'])
+      )
 
-    redirect '/menu'
+      redirect '/menu'
+    else
+      redirect back
+    end
   end
 
   post '/registrarEdificio' do
-    @edificio = params['edificio']
+    @edificio = params['edificio'] 
 
     $edificios.insert(
-      :sede => $sedes.filter(:nombre => @edificio['sede']).get(:sedeid),
+      :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
       :nombre => @edificio['name'],
       :posicion => @edificio['posicion'],
       :tipo => @edificio['tipo'],
@@ -170,7 +218,7 @@ class Main < Sinatra::Base
     @piso = params['piso']
 
     $pisos.insert( 
-      :edificio => $edificios.filter(:nombre => @piso['edificio'], :sede => $sedes.filter(:nombre => @piso['sede']).get(:sedeid)).get(:edificioid),
+      :edificio => $edificios.filter(:nombre => @piso['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid),
       :numero => @piso['numero'],
       :categoria => @piso['categoria'],
     )
@@ -182,7 +230,7 @@ class Main < Sinatra::Base
     @cuarto = params['cuarto']
 
     cuartoId = $cuartos.insert( 
-      :piso => $pisos.filter(:numero => @cuarto['piso'], :edificio => $edificios.filter(:nombre => @cuarto['edificio'], :sede => $sedes.filter(:nombre => @cuarto['sede']).get(:sedeid)).get(:edificioid) ).get(:pisoid),
+      :piso => $pisos.filter(:numero => @cuarto['piso'], :edificio => $edificios.filter(:nombre => @cuarto['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid) ).get(:pisoid),
       :numero => @cuarto['numero'],
       :ancho => @cuarto['ancho'],
       :largo => @cuarto['largo'],
@@ -212,68 +260,71 @@ class Main < Sinatra::Base
 
     $departamentos.insert( 
       :nombre => @dept['name'],
-      :sede => $sedes.filter(:nombre => @dept['sede']).get(:sedeid)
-    )
+      :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
 
     redirect '/menu'
   end
 
   post '/actualizarEmpleado' do
-    @empleado = params['empleado']
-    
-    puts @empleado['gerente']
+    if session[:user]['admin']
+      @empleado = params['empleado']
 
-    personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
-    sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
-    edificioEmpleado = $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid)
-    pisoEmpleado = $pisos.filter(:numero => @empleado['piso'], :edificio => edificioEmpleado).get(:pisoid)
-    cuartoEmpleado = $cuartos.filter(:numero => @empleado['cuarto'], :piso => pisoEmpleado).get(:cuartoid)
+      puts @empleado['gerente']
 
-    puts sedeEmpleado
-    puts edificioEmpleado
-    puts pisoEmpleado
-    puts cuartoEmpleado
+      personaEmpleado = $personas.filter(:nombre => @empleado['nombre'])
+      sedeEmpleado = $sedes.filter(:nombre => @empleado['sede']).get(:sedeid)
+      edificioEmpleado = $edificios.filter(:nombre => @empleado['edificio'], :sede => sedeEmpleado).get(:edificioid)
+      pisoEmpleado = $pisos.filter(:numero => @empleado['piso'], :edificio => edificioEmpleado).get(:pisoid)
+      cuartoEmpleado = $cuartos.filter(:numero => @empleado['cuarto'], :piso => pisoEmpleado).get(:cuartoid)
 
-    empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
+      puts sedeEmpleado
+      puts edificioEmpleado
+      puts pisoEmpleado
+      puts cuartoEmpleado
 
-    begin
-      empleadoEmpleado.update(
-        :sueldo => @empleado['sueldo']
-      ) 
-    rescue
-    end
+      empleadoEmpleado = $empleados.filter(:persona => personaEmpleado.get(:personaid))
 
-    begin
-      empleadoEmpleado.update(
-        :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida'])
-      ) 
-    rescue
-    end
-
-    begin
-      empleadoEmpleado.update(
-        :oficina => $oficinas.filter(:cuarto => cuartoEmpleado).get(:oficinaid)
-      ) 
-    rescue
-    end
-
-    begin
-      empleadoEmpleado.update(
-        :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado).get(:departamentoid)
-      ) 
-    rescue
-    end
-
-    begin
-      if (@empleado['gerente'])
+      begin
         empleadoEmpleado.update(
-          :gerentesede => sedeEmpleado
+          :sueldo => @empleado['sueldo']
         ) 
+      rescue
       end
-    rescue
-    end
 
-    redirect '/menu'
+      begin
+        empleadoEmpleado.update(
+          :horario => setOrGetHorario(@empleado['entrada'], @empleado['salida'])
+        ) 
+      rescue
+      end
+
+      begin
+        empleadoEmpleado.update(
+          :oficina => $oficinas.filter(:cuarto => cuartoEmpleado).get(:oficinaid)
+        ) 
+      rescue
+      end
+
+      begin
+        empleadoEmpleado.update(
+          :directordept => $departamentos.filter(:nombre => @empleado['dir'], :sede => sedeEmpleado).get(:departamentoid)
+        ) 
+      rescue
+      end
+
+      begin
+        if (@empleado['gerente'])
+          empleadoEmpleado.update(
+            :gerentesede => sedeEmpleado
+          ) 
+        end
+      rescue
+      end
+
+      redirect '/menu'
+    else
+      redirect back
+    end
   end
 
   post '/registrarProveedor' do
@@ -400,9 +451,33 @@ class Main < Sinatra::Base
       d[:sede] = sedeHuesped.get(:nombre)
     end
 
-    puts reservacionesHuesped
-
     reservacionesHuesped.to_json
+  end
+
+  get '/adminReservaciones' do
+    content_type :json
+
+    reservaciones = $reservaciones.all
+
+    reservaciones.each do |d|
+      habitacion = $habitaciones.filter(:habitacionid => d[:habitacion])
+      cuarto = $cuartos.filter(:cuartoid => habitacion.get(:cuarto))
+      piso = $pisos.filter(:pisoid => cuarto.get(:piso))
+      edificio = $edificios.filter(:edificioid => piso.get(:edificio))
+      sede = $sedes.filter(:sedeid => edificio.get(:sede))
+
+      d[:categoria] = habitacion.get(:categoria)
+      d[:cuarto] = cuarto.get(:numero)
+      d[:piso] = piso.get(:numero)
+      d[:edificio] = edificio.get(:nombre)
+      d[:sede] = sede.get(:nombre)
+
+      if (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre))
+        reservaciones.delete(d)
+      end
+    end
+
+    reservaciones.to_json
   end
 
   get '/logOut' do

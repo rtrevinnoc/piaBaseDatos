@@ -21,6 +21,7 @@
       <h1 class="h3 mb-3 fw-normal"><a href="/logOut"><i class="bi bi-x-square-fill"></i></a>Hola <%= session[:user]['class'] %>, <%= @user.get(:nombre) %></h1>
       <% if session[:user]['class'] == "empleado" %>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <% if session[:user]['admin'] %>
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Registrar Sede</button>
         </li>
@@ -42,11 +43,19 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="proveedor-tab" data-bs-toggle="tab" data-bs-target="#proveedor" type="button" role="tab" aria-controls="dept" aria-selected="false">Registrar proveedor</button>
         </li>
+        <% end %>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="producto-tab" data-bs-toggle="tab" data-bs-target="#producto" type="button" role="tab" aria-controls="dept" aria-selected="false">Pedir producto</button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="reservaciones-tab" data-bs-toggle="tab" data-bs-target="#reservaciones" type="button" role="tab" aria-controls="reservaciones" aria-selected="false">Administar Reservaciones</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="org-tab" data-bs-toggle="tab" data-bs-target="#org" type="button" role="tab" aria-controls="org" aria-selected="false">Ver organizacion</button>
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
+        <% if session[:user]['admin'] %>
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
           <form method="post" action="/registrarSede">
@@ -91,10 +100,6 @@
               <input type="input" name="edificio[name]" class="form-control" id="floatingInput" placeholder="Nombre">
               <label for="floatingInput">Nombre</label>
             </div>
-            <div class="form-floating">
-              <input type="input" name="edificio[sede]" class="form-control" id="floatingInput" placeholder="Sede">
-              <label for="floatingInput">Sede</label>
-            </div>
             <div class="form-floating input-group">
               <div class="input-group-prepend">
                 <label for="floatingSelect" class="input-group-text">Posicion</label>
@@ -126,10 +131,6 @@
               <label for="floatingInput">Numero</label>
             </div>
             <div class="form-floating">
-              <input type="input" name="piso[sede]" class="form-control" id="floatingInput" placeholder="Sede">
-              <label for="floatingInput">Sede</label>
-            </div>
-            <div class="form-floating">
               <input type="input" name="piso[edificio]" class="form-control" id="floatingInput" placeholder="Edificio">
               <label for="floatingInput">Edificio</label>
             </div>
@@ -158,10 +159,6 @@
             <div class="form-floating">
               <input type="number" name="cuarto[numero]" class="form-control" id="floatingInput" placeholder="Numero">
               <label for="floatingInput">Numero</label>
-            </div>
-            <div class="form-floating">
-              <input type="input" name="cuarto[sede]" class="form-control" id="floatingInput" placeholder="Sede">
-              <label for="floatingInput">Sede</label>
             </div>
             <div class="form-floating">
               <input type="input" name="cuarto[edificio]" class="form-control" id="floatingInput" placeholder="Edificio">
@@ -229,16 +226,11 @@
               <input type="input" name="dept[name]" class="form-control" id="floatingInput" placeholder="Nombre">
               <label for="floatingInput">Nombre</label>
             </div>
-            <div class="form-floating">
-              <input type="input" name="dept[sede]" class="form-control" id="floatingInput" placeholder="Sede">
-              <label for="floatingInput">Sede</label>
-            </div>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Departamento</button>
           </form>
 
         </div>
-
         <div class="tab-pane fade show" id="empleado" role="tabpanel" aria-labelledby="empleado-tab">
 
           <form method="post" action="/actualizarEmpleado">
@@ -337,6 +329,7 @@
           </form>
 
         </div>
+        <% end %>
         <div class="tab-pane fade show" id="producto" role="tabpanel" aria-labelledby="producto-tab">
 
           <form method="post" action="/pedirProducto">
@@ -369,6 +362,51 @@
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Pedir producto</button>
           </form>
+
+        </div>
+        <div class="tab-pane fade show" id="reservaciones" role="tabpanel" aria-labelledby="reservaciones-tab">
+
+          <form method="post" action="/adminReservaciones">
+            <h3 class="h3 mb-3 fw-normal">Administrar Reservaciones</h3>
+
+            <table class="table text-center">
+              <thead>
+                <tr>
+                  <th>Sede</th>
+                  <th>Edificio</th>
+                  <th>Piso</th>
+                  <th>Habitacion</th>
+                  <th>Categoria</th>
+                  <th>Llegada</th>
+                  <th>Salida</th>
+                  <th>Pagada</th>
+                  <th>Check In</th>
+                </tr>
+              </thead>
+              <tbody id="adminReservacionesTabla">
+              </tbody>
+            </table>
+
+          </form>
+
+        </div>
+        <div class="tab-pane fade show" id="org" role="tabpanel" aria-labelledby="org-tab">
+
+          <ul>
+          <% @org.each do |edificio, edificioData| %>
+            <li><%= edificio %></li>
+            <ul>
+              <% edificioData["pisos"].each do |piso, pisoData| %>
+              <li><%= piso %></li>
+              <ul>
+                <% pisoData["cuartos"].each do |cuarto, cuartoData| %>
+                  <li><%= cuarto %></li>
+                <% end %>
+              </ul>
+              <% end %>
+            </ul>
+          <% end %>
+          </ul>
 
         </div>
       </div>
