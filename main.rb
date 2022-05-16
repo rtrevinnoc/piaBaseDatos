@@ -261,6 +261,7 @@ class Main < Sinatra::Base
     $departamentos.insert( 
       :nombre => @dept['name'],
       :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
+    )
 
     redirect '/menu'
   end
