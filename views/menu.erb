@@ -126,9 +126,16 @@
           <form method="post" action="/registrarPiso">
             <h3 class="h3 mb-3 fw-normal">Registrar Piso</h3>
 
-            <div class="form-floating">
-              <input type="input" name="piso[edificio]" class="form-control" id="floatingInput" placeholder="Edificio">
-              <label for="floatingInput">Edificio</label>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Edificio</label>
+              </div>
+              <select name="piso[edificio]" class="form-control" id="floatingSelect">
+                <option selected disabled>Escoge...</option>
+                <% @edificiosTotal.each do |edificio| %>
+                <option value="<%= edificio %>"><%= edificio %></option>
+                <% end %>
+              </select>
             </div>
             <div class="form-floating input-group">
               <div class="input-group-prepend">

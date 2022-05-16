@@ -155,6 +155,7 @@ class Main < Sinatra::Base
 
           @org = {}
           sede = getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
+          @edificiosTotal = $edificios.filter(:sede => sede).select(:nombre).all.map{ |x| x[:nombre] }
           edificios = $edificios.filter(:sede => sede).all
           edificios.each do |edificio|
             pisosDict = {}
