@@ -31,7 +31,17 @@ $(document).ready(function(){
 			.done(function( data ) {
 				console.log(data)
 
-				$('#' + id).prop('checked', data)
+				$('#r' + id).prop('checked', data)
+			}
+		);
+	}
+
+	window.checkinReservacion = function(id) {
+		$.post("/checkinReservacion", { id: id, vacancia: $('#c' + id).is(':checked') })
+			.done(function( data ) {
+				console.log(data)
+
+				$('#c' + id).prop('checked', data)
 			}
 		);
 	}
@@ -45,17 +55,15 @@ $(document).ready(function(){
 				pagada = "checked ";
 			}
 
-			reservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td><input type='checkbox' class='btn-check' id='" + res['reservacionid'] + "' " + pagada + "autocomplete='off' onclick='window.pagarReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='" + res['reservacionid'] + "'>Pagar</label></td></tr>" );
+			reservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td><input type='checkbox' class='btn-check' id='r" + res['reservacionid'] + "' " + pagada + "autocomplete='off' onclick='window.pagarReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='r" + res['reservacionid'] + "'>Pagar</label></td></tr>" );
 		});
 	});
 
 	const adminReservaciones = $('#adminReservacionesTabla');
 
 	$.getJSON('/adminReservaciones', function(data) {
-		console.log(data)
-
 		data.forEach(res => {
-			adminReservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['pagada'] + "</td></tr>" );
+			adminReservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td>" + res['pagada'] + "</td><td><input type='checkbox' class='btn-check' id='c" + res['reservacionid'] + "' " + checkin + "autocomplete='off' onclick='window.checkinReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='c" + res['reservacionid'] + "'>Check In</label></td></tr>" );
 		});
 	});
 })

@@ -401,9 +401,9 @@ class Main < Sinatra::Base
       :pagada => false
     )
 
-    $habitaciones.filter(:habitacionid => habitacionHuesped).update(
-      :vacante => false
-    )
+    #$habitaciones.filter(:habitacionid => habitacionHuesped).update(
+      #:vacante => false
+    #)
 
     redirect '/menu'
   end
@@ -481,7 +481,7 @@ class Main < Sinatra::Base
       puts d
     end
 
-    reservaciones.reject{ |d| (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre)) && !d[:pagada] }.to_json
+    reservaciones.reject{ |d| d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre) }.to_json
   end
 
   post '/pagarReservacion' do
@@ -489,6 +489,25 @@ class Main < Sinatra::Base
 
     begin
       $reservaciones.filter(:reservacionid => reservacionId).update(:pagada => true)
+
+      return true
+    rescue
+      return false
+    end
+  end
+
+  post '/checkinReservacion' do
+    reservacionId = params['id']
+    vacancia = params['vacancia']
+
+    if vacancia.downcase == "true"
+      vacancia = true
+    else
+      vacancia = false
+    end
+
+    begin
+      $habitaciones.filter(:habitacionid => $reservaciones.filter(:reservacionid => reservacionId).get(:habitacion)).update(:vacante => vacancia)
 
       return true
     rescue
