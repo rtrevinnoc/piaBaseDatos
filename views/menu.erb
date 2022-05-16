@@ -400,7 +400,7 @@
               <li>Piso <%= piso %> (categoria: <%= pisoData['categoria'] %>)</li>
               <ul>
                 <% pisoData["cuartos"].each do |cuarto, cuartoData| %>
-                  <li>Cuarto <%= cuarto %> (medidas: <%= cuartoData['largo'] %>&10006;<%= cuartoData['ancho'] %>, telefono: <%= cuartoData['tel'] %>)</li>
+                  <li>Cuarto <%= cuarto %> (medidas: <%= cuartoData['largo'] %>&#10005;<%= cuartoData['ancho'] %>, telefono: <%= cuartoData['tel'] %>)</li>
                 <% end %>
               </ul>
               <% end %>

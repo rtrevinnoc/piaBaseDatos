@@ -216,9 +216,12 @@ class Main < Sinatra::Base
 
   post '/registrarPiso' do
     @piso = params['piso']
+    edificioId = $edificios.filter(:nombre => @piso['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid)
+
+    puts $pisos.filter(:edificio => edificioId).select(:numero).all
 
     $pisos.insert( 
-      :edificio => $edificios.filter(:nombre => @piso['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid),
+      :edificio => edificioId,
       :numero => @piso['numero'],
       :categoria => @piso['categoria'],
     )
