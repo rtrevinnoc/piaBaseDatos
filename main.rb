@@ -481,7 +481,7 @@ class Main < Sinatra::Base
       puts d
     end
 
-    reservaciones.reject{ |d| d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre) }.to_json
+    reservaciones.reject{ |d| (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre)) and !d[:pagada] }.to_json
   end
 
   post '/pagarReservacion' do
