@@ -478,6 +478,8 @@ class Main < Sinatra::Base
       d[:edificio] = edificio.get(:nombre)
       d[:sede] = sede.get(:nombre)
 
+      puts d
+
       if (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre))
         reservaciones.delete(d)
       end
@@ -490,7 +492,7 @@ class Main < Sinatra::Base
     reservacionId = params['id']
 
     begin
-      $reservaciones.filter(:reservacionid => reservacionId).update(:pagada => true);
+      $reservaciones.filter(:reservacionid => reservacionId).update(:pagada => true)
 
       return true
     rescue
