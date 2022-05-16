@@ -48,7 +48,7 @@
           <button class="nav-link" id="producto-tab" data-bs-toggle="tab" data-bs-target="#producto" type="button" role="tab" aria-controls="dept" aria-selected="false">Pedir producto</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="reservaciones-tab" data-bs-toggle="tab" data-bs-target="#reservaciones" type="button" role="tab" aria-controls="reservaciones" aria-selected="false">Administar Reservaciones</button>
+          <button class="nav-link active" id="reservaciones-tab" data-bs-toggle="tab" data-bs-target="#reservaciones" type="button" role="tab" aria-controls="reservaciones" aria-selected="false">Administar Reservaciones</button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="org-tab" data-bs-toggle="tab" data-bs-target="#org" type="button" role="tab" aria-controls="org" aria-selected="false">Ver organizacion</button>
@@ -126,10 +126,6 @@
           <form method="post" action="/registrarPiso">
             <h3 class="h3 mb-3 fw-normal">Registrar Piso</h3>
 
-            <div class="form-floating">
-              <input type="input" name="piso[numero]" class="form-control" id="floatingInput" placeholder="Numero">
-              <label for="floatingInput">Numero</label>
-            </div>
             <div class="form-floating">
               <input type="input" name="piso[edificio]" class="form-control" id="floatingInput" placeholder="Edificio">
               <label for="floatingInput">Edificio</label>

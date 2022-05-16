@@ -172,8 +172,6 @@ class Main < Sinatra::Base
             @org[edificio[:nombre]] = {'tipo' => edificio[:tipo], 'pos' => edificio[:posicion], 'pisos' => pisosDict}
           end
 
-          puts @org
-
           erb :menu
         else
           return "No se encontró el usuario."
@@ -480,7 +478,7 @@ class Main < Sinatra::Base
       d[:edificio] = edificio.get(:nombre)
       d[:sede] = sede.get(:nombre)
 
-      if (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password'].get(:nombre)).get(:nombre))
+      if (d[:sede] != getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:nombre))
         reservaciones.delete(d)
       end
     end
