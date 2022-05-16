@@ -503,9 +503,9 @@ class Main < Sinatra::Base
     reservacion = $reservaciones.filter(:reservacionid => reservacionId)
 
     if vacancia.downcase == "true"
-      vacancia = true
-    else
       vacancia = false
+    else
+      vacancia = true
     end
 
     begin
