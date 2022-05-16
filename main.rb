@@ -486,6 +486,18 @@ class Main < Sinatra::Base
     reservaciones.to_json
   end
 
+  post '/pagarReservacion' do
+    reservacionId = params['id']
+
+    begin
+      $reservaciones.filter(:reservacionid => reservacionId).update(:pagada => true);
+
+      return true
+    rescue
+      return false
+    end
+  end
+
   get '/logOut' do
     session[:user] = nil
 
