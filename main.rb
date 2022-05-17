@@ -411,7 +411,7 @@ class Main < Sinatra::Base
     pisosHuesped = $pisos.filter(:edificio => edificiosHuesped).select(:pisoid).all.map{ |x| x[:pisoid] }
     cuartosHuesped = $cuartos.filter(:piso => pisosHuesped).select(:cuartoid).all.map{ |x| x[:cuartoid] }
 
-    habitacionesLibres = $habitaciones.filter(:cuarto => cuartosHuesped).exclude(:habitacionid => habitacionesOcupadas).select(:habitacionid).all.map{ |x| x[:habitacionid] }
+    habitacionesLibres = $habitaciones.filter(:cuarto => cuartosHuesped, :categoria => @res['categoria']).exclude(:habitacionid => habitacionesOcupadas).select(:habitacionid).all.map{ |x| x[:habitacionid] }
     habitacionHuesped = habitacionesLibres.sample()
 
     $reservaciones.insert(

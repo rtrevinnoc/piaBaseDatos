@@ -468,6 +468,18 @@
               <input type="date" name="reservacion[salida]" class="form-control" placeholder="Fecha de Salida">
               <label for="floatingInput">Fecha de Salida</label>
             </div>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Categoria</label>
+              </div>
+              <select name="reservacion[categoria]" class="form-control" id="floatingSelect">
+                <option selected disabled>Escoge...</option>
+                <option disabled>Habitaciones</option>
+                <option value="economico">Economico</option>
+                <option value="lujo">Lujo</option>
+                <option value="presidencial">Presidencial</option>
+              </select>
+            </div>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Reservacion</button>
           </form>
