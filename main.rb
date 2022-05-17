@@ -156,7 +156,7 @@ class Main < Sinatra::Base
           @empleados = {}
           $empleados.all.each do |empleado|
             persona = $personas.filter(:personaid => empleado[:persona])
-            ubicacion = $ubicaciones.filter(:ubicacionid => persona.get(:ubicacion))
+            ubicacion = $ubicaciones.filter(:ubicacionid => persona.get(:direccion))
             horario = $horarios.filter(:horarioid => empleado[:horario])
 
             @empleados[persona.get(:nombre)] = {
