@@ -52,9 +52,7 @@ $(document).ready(function(){
 			.done(function( data ) {
 				console.log(data)
 
-				if (data === true) {
-					$('#' + id).remove();
-				}
+				$('#' + id).remove();
 			}
 		);
 	}
