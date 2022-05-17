@@ -343,7 +343,8 @@ class Main < Sinatra::Base
       begin
         if (@empleado['gerente'])
           empleadoEmpleado.update(
-            :gerentesede => sedeEmpleado
+            :gerentesede => sedeEmpleado,
+            :admin => @empleado['gerente']
           ) 
         end
       rescue
