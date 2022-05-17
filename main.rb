@@ -552,6 +552,9 @@ class Main < Sinatra::Base
       fechaLlegada = Date.parse(reservacion.get(:llegada))
       hoy = DateTime.now()
 
+      puts (hoy <= fechaLlegada)
+      puts !reservacion.get(:pagada)
+
       if ((hoy <= fechaLlegada) and !reservacion.get(:pagada))
         reservacion.delete()
 
