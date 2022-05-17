@@ -547,9 +547,18 @@ class Main < Sinatra::Base
     reservacionId = params['id']
 
     begin
-      $reservaciones.filter(:reservacionid => reservacionId).delete()
+      reservacion = $reservaciones.filter(:reservacionid => reservacionId)
 
-      return true
+      fechaLlegada = Date.parse(reservacion.get(:llegada))
+      hoy = DateTime.now()
+
+      if hoy <= fechaLlegada
+        reservacion.delete()
+
+        return true
+      else
+        return false
+      end
     rescue
       return false
     end
