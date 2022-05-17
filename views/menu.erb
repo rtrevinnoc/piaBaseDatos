@@ -428,7 +428,12 @@
           <% @empleados.each do |empleado, empleadoData| %>
             <li>Empleado <%= empleado %></li>
             <ul>
-              <li>Sueldo <%= empleadoData['sueldo'] %></li>
+              <li>Telefono: <%= empleadoData['telefono'] %></li>
+              <li>Sueldo: <%= empleadoData['sueldo'] %></li>
+              <li>Fecha de Nacimiento: <%= empleadoData['fechaNacimiento'] %></li>
+              <li>Fecha de Ingreso: <%= empleadoData['fechaIngreso'] %></li>
+              <li>Direccion: <%= empleadoData['calle'] %>, <%= empleadoData['ciudad'] %> (<%= empleadoData['cp'] %>), <%= empleadoData['estado'] %>, <%= empleadoData['pais'] %></li>
+              <li>Horario: <%= empleadoData['horarioEntrada'] %> a <%= empleadoData['horarioSalida'] %></li>
             </ul>
           <% end %>
           </ul>
