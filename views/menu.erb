@@ -455,10 +455,16 @@
           <form method="post" action="/registrarReservacion">
             <h3 class="h3 mb-3 fw-normal">Registrar Reservacion</h3>
 
-
-            <div class="form-floating">
-              <input type="input" name="reservacion[sede]" class="form-control" placeholder="Sede">
-              <label for="floatingInput">Sede</label>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Edificio</label>
+              </div>
+              <select name="reservacion[sede]" class="form-control" id="floatingSelect">
+                <option selected disabled>Escoge...</option>
+                <% @sedesTotal.each do |sede| %>
+                <option value="<%= sede %>"><%= sede %></option>
+                <% end %>
+              </select>
             </div>
             <div class="form-floating">
               <input type="date" name="reservacion[llegada]" class="form-control" placeholder="Fecha de Llegada">

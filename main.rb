@@ -199,6 +199,8 @@ class Main < Sinatra::Base
           return "No se encontró el usuario."
         end
       elsif (session[:user]['class'] == "cliente" && !$huespedes.filter(:persona => @user.get(:personaid)).empty?)
+        @sedesTotal = $sedes.select(:nombre).all.map { |x| x[:nombre] }
+
         erb :menu
       end
     else
