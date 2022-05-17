@@ -547,7 +547,7 @@ class Main < Sinatra::Base
     reservacionId = params['id']
     reservacion = $reservaciones.filter(:reservacionid => reservacionId)
 
-    fechaLlegada = Date.parse(reservacion.get(:llegada))
+    fechaLlegada = reservacion.get(:llegada)
     hoy = DateTime.now()
 
     puts (hoy <= fechaLlegada)
