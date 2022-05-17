@@ -543,6 +543,18 @@ class Main < Sinatra::Base
     end
   end
 
+  post '/cancelarReservacion' do
+    reservacionId = params['id']
+
+    begin
+      $reservaciones.filter(:reservacionid => reservacionId).delete()
+
+      return true
+    rescue
+      return false
+    end
+  end
+
   get '/logOut' do
     session[:user] = nil
 

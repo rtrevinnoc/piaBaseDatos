@@ -47,6 +47,18 @@ $(document).ready(function(){
 		);
 	}
 
+	window.cancelarReservacion = function(id) {
+		$.post("/cancelarReservacion", { id: id })
+			.done(function( data ) {
+				console.log(data)
+
+				if (data === true) {
+					$('#' + id).remove();
+				}
+			}
+		);
+	}
+
 	const reservaciones = $('#reservacionesTabla');
 
 	$.getJSON('/verReservaciones', function(data) {
@@ -56,7 +68,7 @@ $(document).ready(function(){
 				pagada = "checked disabled ";
 			}
 
-			reservaciones.append( "<tr><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td><input type='checkbox' class='btn-check' id='r" + res['reservacionid'] + "' " + pagada + "autocomplete='off' onclick='window.pagarReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='r" + res['reservacionid'] + "'>Pagar</label></td></tr>" );
+			reservaciones.append( "<tr id='" + res['reservacionid'] + "'><td>" + res['sede'] + "</td><td>" + res['edificio'] + "</td><td>" + res['piso'] + "</td><td>" + res['habitacion'] + "</td><td>" + res['categoria'] + "</td><td>" + res['llegada'] + "</td><td>" + res['salida'] + "</td><td><input type='checkbox' class='btn-check' id='r" + res['reservacionid'] + "' " + pagada + "autocomplete='off' onclick='window.pagarReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='r" + res['reservacionid'] + "'>Pagar</label></td><td><input type='checkbox' class='btn-check' id='q" + res['reservacionid'] + "' autocomplete='off' onclick='window.cancelarReservacion(" + res['reservacionid'] + ")'><label class='btn btn-primary' for='q" + res['reservacionid'] + "'>Cancelar</label></td></tr>" );
 		});
 	});
 
