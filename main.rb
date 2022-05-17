@@ -545,16 +545,15 @@ class Main < Sinatra::Base
 
   post '/cancelarReservacion' do
     reservacionId = params['id']
+    reservacion = $reservaciones.filter(:reservacionid => reservacionId)
+
+    fechaLlegada = Date.parse(reservacion.get(:llegada))
+    hoy = DateTime.now()
+
+    puts (hoy <= fechaLlegada)
+    puts !reservacion.get(:pagada)
 
     begin
-      reservacion = $reservaciones.filter(:reservacionid => reservacionId)
-
-      fechaLlegada = Date.parse(reservacion.get(:llegada))
-      hoy = DateTime.now()
-
-      puts (hoy <= fechaLlegada)
-      puts !reservacion.get(:pagada)
-
       if ((hoy <= fechaLlegada) and !reservacion.get(:pagada))
         reservacion.delete()
 
