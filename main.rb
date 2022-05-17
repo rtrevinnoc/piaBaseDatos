@@ -153,6 +153,27 @@ class Main < Sinatra::Base
         if (!empleadoUser.empty?)
           session[:user]['admin'] = empleadoUser.get(:admin)
 
+          @empleados = {}
+          $empleados.all.each do |empleado|
+            persona = $personas.filter(:personaid => empleado[:persona])
+            ubicacion = $ubicaciones.filter(:ubicacionid => persona.get(:ubicacion))
+            horario = $horarios.filter(:horarioid => empleado[:horario])
+
+            @empleados[persona.get(:nombre)] = {
+              :telefono => persona.get(:telefono),
+              :fechaNacimiento => persona.get(:fechanacimiento),
+              :pais => ubicacion.get(:pais),
+              :estado => ubicacion.get(:estado),
+              :ciudad => ubicacion.get(:ciudad),
+              :calle => ubicacion.get(:calle),
+              :cp => ubicacion.get(:codigopostal),
+              :fechaIngreso => empleado[:fechaingreso],
+              :sueldo => empleado[:sueldo],
+              :horarioEntrada => horario.get(:entrada),
+              :horarioSalida => horario.get(:salida)
+            }
+          end
+
           @org = {}
           sede = getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
           @edificiosTotal = $edificios.filter(:sede => sede).select(:nombre).all.map{ |x| x[:nombre] }

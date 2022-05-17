@@ -53,6 +53,9 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="org-tab" data-bs-toggle="tab" data-bs-target="#org" type="button" role="tab" aria-controls="org" aria-selected="false">Ver organizacion</button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="empleados-tab" data-bs-toggle="tab" data-bs-target="#empleados" type="button" role="tab" aria-controls="empleados" aria-selected="false">Ver empleados</button>
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <% if session[:user]['admin'] %>
@@ -414,6 +417,18 @@
                 <% end %>
               </ul>
               <% end %>
+            </ul>
+          <% end %>
+          </ul>
+
+        </div>
+        <div class="tab-pane fade show" id="empleados" role="tabpanel" aria-labelledby="empleados-tab">
+
+          <ul>
+          <% @empleados.each do |empleado, empleadoData| %>
+            <li>Empleado <%= empleado %></li>
+            <ul>
+              <li>Sueldo <%= empleadoData['sueldo'] %></li>
             </ul>
           <% end %>
           </ul>
