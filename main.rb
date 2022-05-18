@@ -800,13 +800,19 @@ class Main < Sinatra::Base
 
   get '/eliminarCuarto' do
     #begin
+      cuarto = $cuartos.filter(:cuartoid => session[:tempCuarto])
       begin
         $habitaciones.filter(:habitacionid => session[:tempHabitacion]).delete()
       rescue
         $oficinas.filter(:oficinaid => session[:tempOficina]).delete()
       end
 
-      $cuartos.filter(:cuartoid => session[:tempCuarto]).delete()
+      habitaciones = $habitaciones.filter(:cuarto => cuartos.get(:cuartoid))
+      oficinas = $oficinas.filter(:cuarto => cuartos.get(:cuartoid))
+
+      oficinas.delete()
+      habitaciones.delete()
+      cuarto.delete()
     #rescue
     #ensure
       session.delete(:tempCuarto)
