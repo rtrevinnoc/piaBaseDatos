@@ -210,20 +210,12 @@ class Main < Sinatra::Base
   end
 
   post '/registrarSede' do
-    @user = $personas.filter(:nombre => session[:user]['name'], :password => session[:user]['password'])
-    empleadoUser = $empleados.filter(:persona => @user.get(:personaid))
-
     if session[:user]['admin']
       @sede = params['sede']
 
-      nuevaSede = $sedes.insert(
+      $sedes.insert(
         :nombre => @sede['name'],
         :direccion => setOrGetUbicacion(@sede['street'], @sede['zip'], @sede['city'], @sede['state'], @sede['country'])
-      )
-
-      empleadoUser.update(
-        :gerentesede => nuevaSede,
-        :admin => true
       )
 
       redirect '/menu'
@@ -776,7 +768,7 @@ class Main < Sinatra::Base
       oficinas.delete()
       habitaciones.delete()
       cuartos.delete()
-      piso.delete()
+      pisos.delete()
       edificio.delete()
     #rescue
     #ensure
