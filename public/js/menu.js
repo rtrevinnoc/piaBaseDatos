@@ -74,7 +74,7 @@ $(document).ready(function(){
 
 	$('#numeroCuarto, #edificioCuarto, #pisoCuarto, #propositoCuarto').on("input", function() {
 		console.log(numeroCuarto.val(), edificioCuarto.val(), pisoCuarto.val(), propositoCuarto.val())
-		$.getJSON('/verPiso', {
+		$.getJSON('/verCuarto', {
 			edificio: edificioCuarto.val(),
 			piso: pisoCuarto.val(),
 			cuarto: numeroCuarto.val(),
