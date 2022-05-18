@@ -43,6 +43,18 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="proveedor-tab" data-bs-toggle="tab" data-bs-target="#proveedor" type="button" role="tab" aria-controls="dept" aria-selected="false">Registrar proveedor</button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="editarSede-tab" data-bs-toggle="tab" data-bs-target="#editarSede" type="button" role="tab" aria-controls="editarSede" aria-selected="false">Editar Sede</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="editarEdificio-tab" data-bs-toggle="tab" data-bs-target="#editarEdificio" type="button" role="tab" aria-controls="editarEdificio" aria-selected="false">Editar Edificio</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="editarEdificio-tab" data-bs-toggle="tab" data-bs-target="#editarPiso" type="button" role="tab" aria-controls="editarPiso" aria-selected="false">Editar Piso</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="editarCuarto-tab" data-bs-toggle="tab" data-bs-target="#editarCuarto" type="button" role="tab" aria-controls="editarCuarto" aria-selected="false">Editar Cuarto</button>
+        </li>
         <% end %>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="producto-tab" data-bs-toggle="tab" data-bs-target="#producto" type="button" role="tab" aria-controls="dept" aria-selected="false">Pedir producto</button>
@@ -339,6 +351,173 @@
             </div>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar Proveedor</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade" id="editarSede" role="tabpanel" aria-labelledby="editarSede-tab">
+  
+          <form method="post" action="/editarSede">
+            <h3 class="h3 mb-3 fw-normal">Registrar Departamento</h3>
+
+            <div class="form-floating">
+              <input type="input" name="sede[nuevo]" class="form-control" id="floatingInput" placeholder="Nuevo nombre">
+              <label for="floatingInput">Nuevo nombre</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Editar Sede</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade" id="editarSede" role="tabpanel" aria-labelledby="editarSede-tab">
+  
+          <form method="post" action="/editarSede">
+            <h3 class="h3 mb-3 fw-normal">Editar Sede</h3>
+
+            <div class="form-floating">
+              <input type="input" name="sede[nuevo]" class="form-control" id="floatingInput" placeholder="Nuevo nombre">
+              <label for="floatingInput">Nuevo nombre</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Editar Sede</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade" id="editarEdificio" role="tabpanel" aria-labelledby="editarEdificio-tab">
+  
+          <form method="post" action="/editarEdificio">
+            <h3 class="h3 mb-3 fw-normal">Editar Edificio</h3>
+
+            <div class="form-floating">
+              <input type="input" name="edificio[name]" class="form-control" id="nombreEdificio" placeholder="Nombre">
+              <label for="floatingInput">Nombre</label>
+            </div>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Posicion</label>
+              </div>
+              <select name="edificio[posicion]" class="form-control" id="posicionEdificio">
+                <option selected disabled>Escoge...</option>
+                <option value="norte">Norte</option>
+                <option value="sur">Sur</option>
+                <option value="este">Este</option>
+                <option value="oeste">Oeste</option>
+              </select>
+            </div>
+            <div class="form-floating">
+              <input type="input" name="edificio[tipo]" class="form-control" id="tipoEdificio" placeholder="Tipo">
+              <label for="floatingInput">Tipo</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Editar Edificio</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade" id="editarPiso" role="tabpanel" aria-labelledby="editarPiso-tab">
+
+          <form method="post" action="/editarPiso">
+            <h3 class="h3 mb-3 fw-normal">Editar Piso</h3>
+
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Edificio</label>
+              </div>
+              <select name="piso[edificio]" class="form-control" id="edificioPiso">
+                <option selected disabled>Escoge...</option>
+                <% @edificiosTotal.each do |edificio| %>
+                <option value="<%= edificio %>"><%= edificio %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="piso[numero]" class="form-control" id="numeroPiso" placeholder="Numero">
+              <label for="floatingInput">Numero</label>
+            </div>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Categoria</label>
+              </div>
+              <select name="piso[categoria]" class="form-control" id="categoriaPiso">
+                <option selected disabled>Escoge...</option>
+                <option value="administrativo">Administrativo</option>
+                <option value="economico">Economico</option>
+                <option value="lujo">Lujo</option>
+                <option value="presidencial">Presidencial</option>
+              </select>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Editar Piso</button>
+          </form>
+
+        </div>
+        <div class="tab-pane fade" id="editarCuarto" role="tabpanel" aria-labelledby="editarCuarto-tab">
+
+          <form method="post" action="/editarCuarto">
+            <h3 class="h3 mb-3 fw-normal">Editar Cuarto</h3>
+
+            <div class="form-floating">
+              <input type="number" name="cuarto[numero]" class="form-control" id="numeroCuarto" placeholder="Numero">
+              <label for="floatingInput">Numero</label>
+            </div>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Edificio</label>
+              </div>
+              <select name="cuarto[edificio]" class="form-control" id="edificioCuarto">
+                <option selected disabled>Escoge...</option>
+                <% @edificiosTotal.each do |edificio| %>
+                <option value="<%= edificio %>"><%= edificio %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="cuarto[piso]" class="form-control" id="pisoCuarto" placeholder="Piso">
+              <label for="floatingInput">Piso</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="cuarto[largo]" class="form-control" id="largoCuarto" placeholder="Largo">
+              <label for="floatingInput">Largo</label>
+            </div>
+            <div class="form-floating">
+              <input type="number" name="cuarto[ancho]" class="form-control" id="anchoCuarto" placeholder="Ancho">
+              <label for="floatingInput">Ancho</label>
+            </div>
+            <div class="form-floating">
+              <input type="tel" name="cuarto[tel]" class="form-control" id="telCuarto" placeholder="Telefono">
+              <label for="floatingInput">Telefono</label>
+            </div>
+            <div>
+              <input type="radio" class="btn-check" name="cuarto[proposito]" id="habitacionCuarto" autocomplete="off" checked value="habitacion" onclick="document.getElementById('precioInput').classList.remove('invisible');document.getElementById('deptInput').classList.add('invisible')">
+              <label class="btn btn-secondary" for="habitacion">Habitacion</label>
+              <input type="radio" class="btn-check" name="cuarto[proposito]" id="oficinaCuarto" autocomplete="off" value="oficina" onclick="document.getElementById('precioInput').classList.add('invisible');document.getElementById('deptInput').classList.remove('invisible')">
+              <label class="btn btn-secondary" for="oficina">Oficina</label>
+            </div>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Categoria</label>
+              </div>
+              <select name="cuarto[categoria]" class="form-control" id="categoriaCuarto">
+                <option selected disabled>Escoge...</option>
+                <option disabled>Habitaciones</option>
+                <option value="economico">Economico</option>
+                <option value="lujo">Lujo</option>
+                <option value="presidencial">Presidencial</option>
+                <option disabled>Oficinas</option>
+                <option value="cocina">Cocina</option>
+                <option value="mantenimiento">Mantenimiento</option>
+                <option value="administracion">Administracion</option>
+                <option value="segurida">Seguridad</option>
+              </select>
+            </div>
+            <div class="form-floating" id="precioInput">
+              <input type="number" name="cuarto[precio]" class="form-control" id="precioCuarto" placeholder="Precio">
+              <label for="floatingInput">Precio</label>
+            </div>
+            <div class="form-floating invisible" id="deptInput">
+              <input type="input" name="cuarto[dept]" class="form-control" id="deptCuarto" placeholder="Departamento">
+              <label for="floatingInput">Departamento</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Editar Cuarto</button>
           </form>
 
         </div>

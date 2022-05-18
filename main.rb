@@ -569,6 +569,21 @@ class Main < Sinatra::Base
     end
   end
 
+  post '/editarSede' do
+    sede = params['sede']
+
+    $sedes.filter(:sedeid => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).update(
+      :nombre => sede['nuevo']
+    )
+  end
+
+  post '/editarEdificio' do
+    edificio = params['edificio']
+    sedeId = getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
+
+    $edificios.filter(:nombre => edificio['original'])
+  end
+
   get '/logOut' do
     session[:user] = nil
 
