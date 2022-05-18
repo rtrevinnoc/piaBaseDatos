@@ -754,6 +754,41 @@ class Main < Sinatra::Base
     redirect '/menu'
   end
 
+  get '/eliminarEdificio' do
+    begin
+      $edificios.filter(:edificioid => session[:tempEdificio]).delete()
+    rescue
+    ensure
+      session.delete(:tempEdificio)
+    end
+  end
+
+  get '/eliminarPiso' do
+    begin
+      $pisos.filter(:pisoid => session[:tempPiso]).delete()
+    rescue
+    ensure
+      session.delete(:tempPiso)
+    end
+  end
+
+  get '/eliminarCuarto' do
+    begin
+      begin
+        $habitaciones.filter(:habitacionid => session[:tempHabitacion]).delete()
+      rescue
+        $oficinas.filter(:oficinaid => session[:tempOficina]).delete()
+      end
+
+      $cuartos.filter(:cuartoid => session[:tempCuarto]).delete()
+    rescue
+    ensure
+      session.delete(:tempCuarto)
+      session.delete(:tempOficina)
+      session.delete(:tempHabitacion)
+    end
+  end
+
   get '/logOut' do
     session[:user] = nil
 
