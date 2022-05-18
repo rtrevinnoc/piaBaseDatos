@@ -72,8 +72,8 @@ $(document).ready(function(){
 	const precioCuarto = $('#precioCuarto');
 	const deptCuarto = $('#deptCuarto');
 
-	$('#edificioPiso, #numeroPiso').on("input", function() {
-		console.log(edificioPiso.val(), numeroPiso.val())
+	$('#numeroCuarto, #edificioCuarto, #pisoCuarto, #propositoCuarto').on("input", function() {
+		console.log(numeroCuarto.val(), edificioCuarto.val(), pisoCuarto.val(), propositoCuarto.val())
 		$.getJSON('/verPiso', {
 			edificio: edificioCuarto.val(),
 			piso: pisoCuarto.val(),
