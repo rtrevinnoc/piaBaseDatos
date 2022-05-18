@@ -760,7 +760,7 @@ class Main < Sinatra::Base
   get '/eliminarEdificio' do
     #begin
       edificio = $edificios.filter(:edificioid => session[:tempEdificio])
-      pisos = $pisos.filter(:pisoid => edificio.get(:edificioid))
+      pisos = $pisos.filter(:edificio => edificio.get(:edificioid))
       cuartos = $cuartos.filter(:piso => pisos.get(:pisoid))
       habitaciones = $habitaciones.filter(:cuarto => cuartos.get(:cuartoid))
       oficinas = $oficinas.filter(:cuarto => cuartos.get(:cuartoid))
