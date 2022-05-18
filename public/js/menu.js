@@ -36,8 +36,10 @@ $(document).ready(function(){
 		}, function(data) {
 			console.log(data)
 
-			posicionEdificio.val(data["posicion"])
-			tipoEdificio.val(data["tipo"])
+			if (!data["exists"]) {
+				posicionEdificio.val(data["posicion"])
+				tipoEdificio.val(data["tipo"])	
+			}
 		});
 	});
 

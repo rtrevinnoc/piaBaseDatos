@@ -593,7 +593,8 @@ class Main < Sinatra::Base
 
     {
       posicion: edificioEdificio.get(:posicion),
-      tipo: edificioEdificio.get(:tipo)
+      tipo: edificioEdificio.get(:tipo),
+      exists: edificioEdificio.empty?
     }.to_json
   end
 
