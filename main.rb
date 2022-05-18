@@ -624,7 +624,7 @@ class Main < Sinatra::Base
     )
 
     pisoPiso = $pisos.filter(
-      :edificio => pisoEdificio.get(:edificioid)
+      :edificio => pisoEdificio.get(:edificioid),
       :numero => params['piso']
     )
 
