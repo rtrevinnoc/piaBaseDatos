@@ -579,11 +579,29 @@ class Main < Sinatra::Base
     redirect '/menu'
   end
 
+  get '/verEmpleado' do
+    content_type :json
+
+    nombreEdificio = params['edificio']
+
+    edificioEdificio = $edificios.filter(
+      :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
+      :nombre => nombreEdificio
+    )
+
+    {
+      posicion: edificioEdificio.get(:posicion),
+      tipo: edificioEdificio.get(:tipo)
+    }.to_json
+  end
+
   post '/editarEdificio' do
     edificio = params['edificio']
-    sedeId = getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
 
-    $edificios.filter(:nombre => edificio['original'])
+    $edificios.filter(:nombre => edificio['original'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).update(
+      :posicion => edificio["posicion"],
+      :tipo => edificio["tipo"]
+    )
 
     redirect '/menu'
   end

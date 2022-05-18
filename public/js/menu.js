@@ -26,6 +26,21 @@ $(document).ready(function(){
 		});
 	});
 
+	const nombreEdificio = $('#nombreEdificio');
+	const posicionEdificio = $('#posicionEdificio');
+	const tipoEdificio = $('#tipoEdificio');
+
+	nombreEdificio.on("input", function() {
+		$.getJSON('/verEdificio', {
+			edificio: this.value
+		}, function(data) {
+			console.log(data)
+
+			posicionEdificio.val(data["posicion"])
+			tipoEdificio.val(data["tipo"])
+		});
+	});
+
 	window.pagarReservacion = function(id) {
 		$.post("/pagarReservacion", { id: id })
 			.done(function( data ) {
