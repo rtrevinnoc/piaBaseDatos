@@ -807,8 +807,8 @@ class Main < Sinatra::Base
         $oficinas.filter(:oficinaid => session[:tempOficina]).delete()
       end
 
-      habitaciones = $habitaciones.filter(:cuarto => cuartos.get(:cuartoid))
-      oficinas = $oficinas.filter(:cuarto => cuartos.get(:cuartoid))
+      habitaciones = $habitaciones.filter(:cuarto => cuarto.get(:cuartoid))
+      oficinas = $oficinas.filter(:cuarto => cuarto.get(:cuartoid))
 
       oficinas.delete()
       habitaciones.delete()
