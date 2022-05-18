@@ -175,9 +175,10 @@ class Main < Sinatra::Base
           end
 
           @org = {}
-          sede = getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)
-          @edificiosTotal = $edificios.filter(:sede => sede).select(:nombre).all.map{ |x| x[:nombre] }
-          edificios = $edificios.filter(:sede => sede).all
+          sede = getSedeEmpleado(session[:user]['name'], session[:user]['password']) 
+          @sedeNombre = sede.get(:nombre)
+          @edificiosTotal = $edificios.filter(:sede => sede.get(:sedeid)).select(:nombre).all.map{ |x| x[:nombre] }
+          edificios = $edificios.filter(:sede => sede.get(:sedeid)).all
           edificios.each do |edificio|
             pisosDict = {}
             pisos = $pisos.filter(:edificio => edificio[:edificioid]).all
@@ -579,7 +580,7 @@ class Main < Sinatra::Base
     redirect '/menu'
   end
 
-  get '/verEmpleado' do
+  get '/verEdificio' do
     content_type :json
 
     nombreEdificio = params['edificio']

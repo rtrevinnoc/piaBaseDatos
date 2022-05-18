@@ -585,19 +585,22 @@
         <div class="tab-pane fade show" id="org" role="tabpanel" aria-labelledby="org-tab">
 
           <ul>
-          <% @org.each do |edificio, edificioData| %>
-            <li>Edificio <%= edificio %> (tipo: <%= edificioData['tipo'] %>, posicion: <%= edificioData['pos'] %>)</li>
+            <li>Sede <%= @sedeNombre %></li>
             <ul>
-              <% edificioData["pisos"].each do |piso, pisoData| %>
-              <li>Piso <%= piso %> (categoria: <%= pisoData['categoria'] %>)</li>
+            <% @org.each do |edificio, edificioData| %>
+              <li>Edificio <%= edificio %> (tipo: <%= edificioData['tipo'] %>, posicion: <%= edificioData['pos'] %>)</li>
               <ul>
-                <% pisoData["cuartos"].each do |cuarto, cuartoData| %>
-                  <li>Cuarto <%= cuarto %> (medidas: <%= cuartoData['largo'] %>&#10005;<%= cuartoData['ancho'] %>, telefono: <%= cuartoData['tel'] %>)</li>
+                <% edificioData["pisos"].each do |piso, pisoData| %>
+                <li>Piso <%= piso %> (categoria: <%= pisoData['categoria'] %>)</li>
+                <ul>
+                  <% pisoData["cuartos"].each do |cuarto, cuartoData| %>
+                    <li>Cuarto <%= cuarto %> (medidas: <%= cuartoData['largo'] %>&#10005;<%= cuartoData['ancho'] %>, telefono: <%= cuartoData['tel'] %>)</li>
+                  <% end %>
+                </ul>
                 <% end %>
               </ul>
-              <% end %>
+            <% end %>
             </ul>
-          <% end %>
           </ul>
 
         </div>
