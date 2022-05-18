@@ -615,6 +615,44 @@ class Main < Sinatra::Base
     redirect '/menu'
   end
 
+  get '/verPiso' do
+    content_type :json
+
+    pisoEdificio = $edificios.filter(
+      :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
+      :nombre => params['edificio']
+    )
+
+    pisoPiso = $pisos.filter(
+      :edificio => pisoEdificio.get(:edificioid)
+      :numero => params['piso']
+    )
+
+    session[:tempPiso] = pisoPiso.get(:pisoid)
+
+    {
+      categoria: pisoPiso.get(:categoria),
+      empty: pisoPiso.empty?
+    }.to_json
+  end
+
+  post '/editarPiso' do
+    piso = params['piso']
+
+    begin
+      pisoPiso = $pisos.filter(
+        :pisoid => session[:tempPiso]
+      ).update(
+        :categoria => piso['categoria']
+      )
+    rescue
+    ensure
+      session.delete(:tempPiso)
+    end
+
+    redirect '/menu'
+  end
+
   get '/logOut' do
     session[:user] = nil
 

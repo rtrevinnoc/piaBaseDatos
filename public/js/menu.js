@@ -26,7 +26,7 @@ $(document).ready(function(){
 		});
 	});
 
-	const nombreEdificio = $('#nombreEdificio');
+	const nombrePiso = $('#nombreEdificio');
 	const posicionEdificio = $('#posicionEdificio');
 	const tipoEdificio = $('#tipoEdificio');
 
@@ -39,6 +39,23 @@ $(document).ready(function(){
 			if (!data["empty"]) {
 				posicionEdificio.val(data["posicion"])
 				tipoEdificio.val(data["tipo"])	
+			}
+		});
+	});
+
+	const edificioPiso = $('#edificioPiso');
+	const numeroPiso = $('#numeroPiso');
+	const categoriaPiso = $('#categoriaPiso');
+
+	$('#edificioPiso, #numeroPiso').on("input", function() {
+		$.getJSON('/verPiso', {
+			edificio: edificioPiso.value,
+			piso: numeroPiso.value
+		}, function(data) {
+			console.log(data)
+
+			if (!data["empty"]) {
+				categoriaPiso.val(data["categoria"])
 			}
 		});
 	});
