@@ -603,7 +603,7 @@ class Main < Sinatra::Base
 
     begin
       $edificios.filter(:nombre => session[:tempEdificio], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).update(
-        :nombre => edificio["nombre"]
+        :nombre => edificio["nombre"],
         :posicion => edificio["posicion"],
         :tipo => edificio["tipo"]
       )
