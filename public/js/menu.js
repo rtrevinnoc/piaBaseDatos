@@ -48,10 +48,10 @@ $(document).ready(function(){
 	const categoriaPiso = $('#categoriaPiso');
 
 	$('#edificioPiso, #numeroPiso').on("input", function() {
-		console.log(edificioPiso.value, numeroPiso.value)
+		console.log(edificioPiso.val(), numeroPiso.val())
 		$.getJSON('/verPiso', {
-			edificio: edificioPiso.value,
-			piso: numeroPiso.value
+			edificio: edificioPiso.val(),
+			piso: numeroPiso.val()
 		}, function(data) {
 			console.log(data)
 
