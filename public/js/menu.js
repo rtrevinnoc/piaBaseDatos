@@ -61,6 +61,39 @@ $(document).ready(function(){
 		});
 	});
 
+	const numeroCuarto = $('#numeroCuarto');
+	const edificioCuarto = $('#edificioCuarto');
+	const pisoCuarto = $('#pisoCuarto');
+	const largoCuarto = $('#largoCuarto');
+	const anchoCuarto = $('#anchoCuarto');
+	const telCuarto = $('#telCuarto');
+	const propositoCuarto = $('#propositoCuarto');
+	const categoriaCuarto = $('#categoriaCuarto');
+	const precioCuarto = $('#precioCuarto');
+	const deptCuarto = $('#deptCuarto');
+
+	$('#edificioPiso, #numeroPiso').on("input", function() {
+		console.log(edificioPiso.val(), numeroPiso.val())
+		$.getJSON('/verPiso', {
+			edificio: edificioCuarto.val(),
+			piso: pisoCuarto.val(),
+			cuarto: cuartoCuarto.val(),
+			proposito: propositoCuarto.val()
+		}, function(data) {
+			console.log(data)
+
+			if (!data["empty"]) {
+				largoCuarto.val(data["largo"])
+				anchoCuarto.val(data["ancho"])
+				telCuarto.val(data["tel"])
+				propositoCuarto.val(data["proposito"])
+				categoriaCuarto.val(data["categoria"])
+				precioCuarto.val(currency(data["precio"]))
+				deptCuarto.val(data["dept"])
+			}
+		});
+	});
+
 	window.pagarReservacion = function(id) {
 		$.post("/pagarReservacion", { id: id })
 			.done(function( data ) {

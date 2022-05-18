@@ -485,11 +485,15 @@
               <input type="tel" name="cuarto[tel]" class="form-control" id="telCuarto" placeholder="Telefono">
               <label for="floatingInput">Telefono</label>
             </div>
-            <div>
-              <input type="radio" class="btn-check" name="cuarto[proposito]" id="habitacionCuarto" autocomplete="off" checked value="habitacion" onclick="document.getElementById('precioInput').classList.remove('invisible');document.getElementById('deptInput').classList.add('invisible')">
-              <label class="btn btn-secondary" for="habitacion">Habitacion</label>
-              <input type="radio" class="btn-check" name="cuarto[proposito]" id="oficinaCuarto" autocomplete="off" value="oficina" onclick="document.getElementById('precioInput').classList.add('invisible');document.getElementById('deptInput').classList.remove('invisible')">
-              <label class="btn btn-secondary" for="oficina">Oficina</label>
+            <div class="form-floating input-group">
+              <div class="input-group-prepend">
+                <label for="floatingSelect" class="input-group-text">Proposito</label>
+              </div>
+              <select name="cuarto[proposito]" class="form-control" id="propositoCuarto">
+                <option selected disabled>Escoge...</option>
+                <option value="habitacion">Habitacion</option>
+                <option value="oficina">Oficina</option>
+              </select>
             </div>
             <div class="form-floating input-group">
               <div class="input-group-prepend">

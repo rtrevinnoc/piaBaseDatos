@@ -621,9 +621,6 @@ class Main < Sinatra::Base
   get '/verPiso' do
     content_type :json
 
-    puts params['edificio']
-    puts params['piso']
-
     pisoEdificio = $edificios.filter(
       :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
       :nombre => params['edificio']
@@ -647,10 +644,8 @@ class Main < Sinatra::Base
   post '/editarPiso' do
     piso = params['piso']
 
-    puts piso
-
     begin
-      pisoPiso = $pisos.filter(
+      $pisos.filter(
         :pisoid => session[:tempPiso]
       ).update(
         :categoria => piso['categoria']
@@ -658,6 +653,102 @@ class Main < Sinatra::Base
     rescue
     ensure
       session.delete(:tempPiso)
+    end
+
+    redirect '/menu'
+  end
+
+  get '/verCuarto' do
+    content_type :json
+
+    cuartoEdificio = $edificios.filter(
+      :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
+      :nombre => params['edificio']
+    )
+
+    cuartoPiso = $pisos.filter(
+      :edificio => cuartoEdificio.get(:edificioid),
+      :numero => params['piso']
+    )
+    
+    cuartoCuarto = $cuartos.filter(
+      :piso => pisoEdificio.get(:pisoid),
+      :numero => params['cuarto']
+    )
+
+    if (!cuartoCuarto.empty?)
+      session[:tempCuarto] = cuartoCuarto.get(:cuartoid)
+    end
+
+    if (params['proposito'] == "habitacion")
+      cuartoHabitacion = $habitaciones.filter(
+        :cuarto => cuartoCuarto.get(:cuartoid)
+      ) 
+
+      if (!cuartoHabitacion.empty?)
+        session[:tempHabitacion] = cuartoHabitacion.get(:habitacionid)
+      end
+
+      {
+        largo: cuartoCuarto.get(:largo),
+        ancho: cuartoCuarto.get(:ancho),
+        tel: cuartoCuarto.get(:telefono),
+        proposito: "habitacion",
+        precio: cuartoHabitacion.get(:precio),
+        empty: cuartoHabitacion.empty?
+      }.to_json
+    elsif (params['proposito'] == "oficina") 
+      cuartoOficina = $oficinas.filter(
+        :cuarto => cuartoCuarto.get(:cuartoid)
+      ) 
+
+      if (!cuartoOficina.empty?)
+        session[:tempOficina] = cuartoOficina.get(:oficinaid)
+      end
+
+      {
+        largo: cuartoCuarto.get(:largo),
+        ancho: cuartoCuarto.get(:ancho),
+        tel: cuartoCuarto.get(:telefono),
+        proposito: "oficina",
+        categoria: cuartoOficina.get(:categoria),
+        dept: $departamentos.filter(:departamentoid => cuartoOficina.get(:departamento)).get(:nombre),
+        empty: cuartoOficina.empty?
+      }.to_json
+    end
+  end
+
+  post '/editarCuarto' do
+    cuarto = params['cuarto']
+
+    begin
+      $cuartos.filter(
+        :cuartoid => session[:tempCuarto]
+      ).update(
+        :largo => cuarto['largo'],
+        :ancho => cuarto['ancho'],
+        :telefono => cuarto['tel']
+      )
+
+      begin
+        $habitaciones.filter(
+          :habitacionid => session[:tempHabitacion]
+        ).update(
+          :precio => cuarto['precio']
+        )
+      rescue
+        $oficinas.filter(
+          :oficinaid => session[:tempOficina]
+        ).update(
+          :categoria => cuarto['categoria'],
+          :departamento => $departamentos.filter(:nombre => cuarto['dept']).get(:departamentoid)
+        )
+      end
+    rescue
+    ensure
+      session.delete(:tempCuarto)
+      session.delete(:tempOficina)
+      session.delete(:tempHabitacion)
     end
 
     redirect '/menu'
