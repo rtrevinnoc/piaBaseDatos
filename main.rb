@@ -244,6 +244,9 @@ class Main < Sinatra::Base
       @piso = params['piso']
       edificioId = $edificios.filter(:nombre => @piso['edificio'], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).get(:edificioid)
       ultimoPiso = $pisos.filter(:edificio => edificioId).select(:numero).all.map{ |x| x[:numero] }.max
+      if ultimoPiso == nil
+        ultimoPiso = 0
+      end
 
       $pisos.insert( 
                     :edificio => edificioId,
