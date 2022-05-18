@@ -621,6 +621,9 @@ class Main < Sinatra::Base
   get '/verPiso' do
     content_type :json
 
+    puts params['edificio']
+    puts params['piso']
+
     pisoEdificio = $edificios.filter(
       :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
       :nombre => params['edificio']
@@ -643,6 +646,8 @@ class Main < Sinatra::Base
 
   post '/editarPiso' do
     piso = params['piso']
+
+    puts piso
 
     begin
       pisoPiso = $pisos.filter(
