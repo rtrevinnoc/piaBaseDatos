@@ -26,7 +26,7 @@ $(document).ready(function(){
 		});
 	});
 
-	const nombrePiso = $('#nombreEdificio');
+	const nombreEdificio = $('#nombreEdificio');
 	const posicionEdificio = $('#posicionEdificio');
 	const tipoEdificio = $('#tipoEdificio');
 
