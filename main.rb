@@ -590,7 +590,9 @@ class Main < Sinatra::Base
       :nombre => nombreEdificio
     )
 
-    session[:tempEdificio] = edificioEdificio.get(:edificioid)
+    if (!edificioEdificio.empty?)
+      session[:tempEdificio] = edificioEdificio.get(:edificioid)
+    end
 
     {
       posicion: edificioEdificio.get(:posicion),
@@ -629,7 +631,9 @@ class Main < Sinatra::Base
       :numero => params['piso']
     )
 
-    session[:tempPiso] = pisoPiso.get(:pisoid)
+    if (!pisoPiso.empty?)
+      session[:tempPiso] = pisoPiso.get(:pisoid)
+    end
 
     {
       categoria: pisoPiso.get(:categoria),
