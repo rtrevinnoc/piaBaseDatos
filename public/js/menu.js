@@ -77,7 +77,7 @@ $(document).ready(function(){
 		$.getJSON('/verPiso', {
 			edificio: edificioCuarto.val(),
 			piso: pisoCuarto.val(),
-			cuarto: cuartoCuarto.val(),
+			cuarto: numeroCuarto.val(),
 			proposito: propositoCuarto.val()
 		}, function(data) {
 			console.log(data)
