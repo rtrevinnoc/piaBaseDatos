@@ -764,6 +764,8 @@ class Main < Sinatra::Base
     ensure
       session.delete(:tempEdificio)
     end
+
+    redirect '/menu'
   end
 
   get '/eliminarPiso' do
@@ -773,6 +775,8 @@ class Main < Sinatra::Base
     ensure
       session.delete(:tempPiso)
     end
+
+    redirect '/menu'
   end
 
   get '/eliminarCuarto' do
@@ -790,6 +794,8 @@ class Main < Sinatra::Base
       session.delete(:tempOficina)
       session.delete(:tempHabitacion)
     end
+
+    redirect '/menu'
   end
 
   get '/logOut' do
