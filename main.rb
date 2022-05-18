@@ -605,7 +605,7 @@ class Main < Sinatra::Base
     edificio = params['edificio']
 
     begin
-      $edificios.filter(:edificioid => session[:tempEdificiop]).update(
+      $edificios.filter(:edificioid => session[:tempEdificio]).update(
         :nombre => edificio["name"],
         :posicion => edificio["posicion"],
         :tipo => edificio["tipo"]
