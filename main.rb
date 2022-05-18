@@ -758,7 +758,7 @@ class Main < Sinatra::Base
   end
 
   get '/eliminarEdificio' do
-    #begin
+    begin
       edificio = $edificios.filter(:edificioid => session[:tempEdificio])
       pisos = $pisos.filter(:edificio => edificio.get(:edificioid))
       cuartos = $cuartos.filter(:piso => pisos.get(:pisoid))
@@ -770,16 +770,16 @@ class Main < Sinatra::Base
       cuartos.delete()
       pisos.delete()
       edificio.delete()
-    #rescue
-    #ensure
+    rescue
+    ensure
       session.delete(:tempEdificio)
-    #end
+    end
 
     redirect '/menu'
   end
 
   get '/eliminarPiso' do
-    #begin
+    begin
       piso = $pisos.filter(:pisoid => session[:tempPiso])
       cuartos = $cuartos.filter(:piso => piso.get(:pisoid))
       habitaciones = $habitaciones.filter(:cuarto => cuartos.get(:cuartoid))
@@ -790,16 +790,16 @@ class Main < Sinatra::Base
       habitaciones.delete()
       cuartos.delete()
       piso.delete()
-    #rescue
-    #ensure
+    rescue
+    ensure
       session.delete(:tempPiso)
-    #end
+    end
 
     redirect '/menu'
   end
 
   get '/eliminarCuarto' do
-    #begin
+    begin
       cuarto = $cuartos.filter(:cuartoid => session[:tempCuarto])
       begin
         $habitaciones.filter(:habitacionid => session[:tempHabitacion]).delete()
@@ -813,12 +813,12 @@ class Main < Sinatra::Base
       oficinas.delete()
       habitaciones.delete()
       cuarto.delete()
-    #rescue
-    #ensure
+    rescue
+    ensure
       session.delete(:tempCuarto)
       session.delete(:tempOficina)
       session.delete(:tempHabitacion)
-    #end
+    end
 
     redirect '/menu'
   end
