@@ -584,12 +584,13 @@ class Main < Sinatra::Base
     content_type :json
 
     nombreEdificio = params['edificio']
-    session[:tempEdificio] = nombreEdificio
 
     edificioEdificio = $edificios.filter(
       :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid),
       :nombre => nombreEdificio
     )
+
+    session[:tempEdificio] = edificioEdificio.get(:edificioid)
 
     {
       posicion: edificioEdificio.get(:posicion),
@@ -602,8 +603,8 @@ class Main < Sinatra::Base
     edificio = params['edificio']
 
     begin
-      $edificios.filter(:nombre => session[:tempEdificio], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).update(
-        :nombre => edificio["nombre"],
+      $edificios.filter(:edificioid => session[:tempEdificiop]).update(
+        :nombre => edificio["name"],
         :posicion => edificio["posicion"],
         :tipo => edificio["tipo"]
       )
