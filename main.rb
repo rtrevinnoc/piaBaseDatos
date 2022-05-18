@@ -594,7 +594,7 @@ class Main < Sinatra::Base
     {
       posicion: edificioEdificio.get(:posicion),
       tipo: edificioEdificio.get(:tipo),
-      exists: edificioEdificio.empty?
+      empty: edificioEdificio.empty?
     }.to_json
   end
 
@@ -603,6 +603,7 @@ class Main < Sinatra::Base
 
     begin
       $edificios.filter(:nombre => session[:tempEdificio], :sede => getSedeEmpleado(session[:user]['name'], session[:user]['password']).get(:sedeid)).update(
+        :nombre => edificio["nombre"]
         :posicion => edificio["posicion"],
         :tipo => edificio["tipo"]
       )

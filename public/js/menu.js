@@ -36,7 +36,7 @@ $(document).ready(function(){
 		}, function(data) {
 			console.log(data)
 
-			if (!data["exists"]) {
+			if (!data["empty"]) {
 				posicionEdificio.val(data["posicion"])
 				tipoEdificio.val(data["tipo"])	
 			}
