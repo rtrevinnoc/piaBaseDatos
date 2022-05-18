@@ -48,6 +48,7 @@ $(document).ready(function(){
 	const categoriaPiso = $('#categoriaPiso');
 
 	$('#edificioPiso, #numeroPiso').on("input", function() {
+		console.log(edificioPiso.value, numeroPiso.value)
 		$.getJSON('/verPiso', {
 			edificio: edificioPiso.value,
 			piso: numeroPiso.value
