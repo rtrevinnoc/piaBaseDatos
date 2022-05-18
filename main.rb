@@ -672,7 +672,7 @@ class Main < Sinatra::Base
     )
     
     cuartoCuarto = $cuartos.filter(
-      :piso => pisoEdificio.get(:pisoid),
+      :piso => cuartoPiso.get(:pisoid),
       :numero => params['cuarto']
     )
 
